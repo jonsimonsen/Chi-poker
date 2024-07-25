@@ -8,7 +8,13 @@ def dealHand():
     return hand
 
 # Encode a hand as 4 ints (one per suit) with the first three bits indicating the number of cards in the suit
-def processHand():
+def processHand(hand):
+    spades = 0
+    hearts = 1
+    diamonds = 2
+    clubs = 3
+    suits = [spades, hearts, diamonds, clubs]
+    print(suits)
     return
 
 # Print a hand showing cards in brackets for each suit
@@ -29,4 +35,6 @@ def printHand(hand):
     return
 
 # Test dealing a hand and printing it out
-printHand(dealHand())
+nuts = dealHand()
+printHand(nuts)
+processHand(nuts)
