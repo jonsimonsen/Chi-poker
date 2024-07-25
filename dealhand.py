@@ -16,18 +16,20 @@ def processHand(hand):
 
     i = 0
     suit = 1
-    suits = [spades, hearts, diamonds, clubs]
+    suits = [0, 0, 0, 0]
     print(suits)
 
     while(suit < 5):
         count = 0
         while(i < 13 and hand[i] < suit * 13 ):
-            print(hand[i] % 13)
+            #print(hand[i] % 13)
+            suits[suit - 1] += 1 << (hand[i] % 13)
             count += 1
             i += 1
         print("count: " + str(count))
         suit += 1
-
+    
+    print(suits)
     return
 
 # Print a hand showing cards in brackets for each suit
