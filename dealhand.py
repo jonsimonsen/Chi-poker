@@ -9,11 +9,6 @@ def dealHand():
 
 # Encode a hand as 4 ints (one per suit) with the first three bits indicating the number of cards in the suit
 def processHand(hand):
-    spades = 0
-    hearts = 1
-    diamonds = 2
-    clubs = 3
-
     i = 0
     suit = 1
     suits = [0, 0, 0, 0]
@@ -27,11 +22,34 @@ def processHand(hand):
             count += 1
             i += 1
         print("count: " + str(count))
+        suits[suit -1] += addLengthBits(count)
         suit += 1
     
     print(suits)
     return
 
+# Create an int to encode the length of a suit as its most significant bits (for adding to the suit int)
+def addLengthBits(count):
+    lengthBits = 0
+    # Python switch/case
+    match count:
+        case 0:
+            return 0
+        case 1 | 2 | 3 | 4:
+            return 0b1 << 13
+        case 5:
+            return 0b1 << 14
+        case 6:
+            return 0b11 << 13
+        case 7:
+            return 0b1 << 15
+        case 8:
+            return 0b101 << 13
+        case 9:
+            return 0b11 << 14
+        case _:
+            return 0b111 << 13
+    
 # Print a hand showing cards in brackets for each suit
 def printHand(hand):
     i = 0
