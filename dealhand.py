@@ -1,11 +1,17 @@
 import random
 
+# Deal a 13 card hand for Chinese poker (cards represented as numbers from 0 to 51)
 def dealHand():
     deck = list(range(52))
     hand = random.sample(deck, 13)
     hand.sort()
     return hand
 
+# Encode a hand as 4 ints (one per suit) with the first three bits indicating the number of cards in the suit
+def processHand():
+    return
+
+# Print a hand showing cards in brackets for each suit
 def printHand(hand):
     i = 0
     suit = 1
@@ -20,7 +26,7 @@ def printHand(hand):
         cards += "]"
 
     print(cards)
+    return
 
-
-# Use
+# Test dealing a hand and printing it out
 printHand(dealHand())
