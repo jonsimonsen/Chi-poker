@@ -12,7 +12,6 @@ def processHand(hand):
     i = 0
     suit = 1
     suits = [0, 0, 0, 0]
-    print(suits)
 
     while(suit < 5):
         count = 0
@@ -30,7 +29,6 @@ def processHand(hand):
 
 # Create an int to encode the length of a suit as its most significant bits (for adding to the suit int)
 def addLengthBits(count):
-    lengthBits = 0
     # Python switch/case
     match count:
         case 0:
