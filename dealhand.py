@@ -103,10 +103,22 @@ def arrangeHand(hand):
     sfl = findStraightFlush(hand)
     return
 
-# Check a hand for a straight flush. Return 0 if not found. Otherwise, return a number corresponding to the strength
+# Check a hand for a straight flush. Return None if not found. Otherwise, return a number corresponding to the strength
 def findStraightFlush(hand):
-    # Consider the argument to be a reference so we can remove used cards from the hand
-    return
+    if hand[0] < (0b11 << 13):
+        return None
+    else:
+        rank = findStraight(hand[0])
+        if rank is None:
+            if hand[1] <( 0b11 << 13):
+                return None
+            else:
+                rank = findStraight(hand[1])
+
+    return rank
+
+# Check a hand for a straight
+
 
 # Test dealing a hand and printing it out
 nuts = dealHand()
