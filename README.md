@@ -39,7 +39,7 @@ The plan is for the AI to optimalize their hands against a table of static hand 
 5 card hands will be given an int value in [0, 17923]. If my calculations are correct, this should cover all different ranks of hands. Ranks of kickers are not take into account for quads, trips and full houses. For an improved AI, we might want to consider that f.ex. KKKKA is stronger than KKKKQ since it makes it impossible for someone to have stronger quads (but presumably there are better places to use an ace in that example).  
 
 - Straight flushes [0, 9]  
-- Quads [10, 22] (The rank of the kicker is not taken into account, even though KKKKA is stronger than KKKKQ since it removes all quad aces. The same will apply to full houses and trips)  
+- Quads [10, 22]  
 - Full houses [23, 35]  
 - Flushes [36, 1312]  
 - Straights [1313, 1322]  
@@ -50,7 +50,7 @@ The plan is for the AI to optimalize their hands against a table of static hand 
 
 ## Features
 - Create hands by treating each suit as an int where each bit represents one rank. We might want to create a class for the hands later
-- Enable printing processed hand in a manner that is easily readable. Uses a dict for mapping from bit position to card symbol.  
+- Enable printing processed hands in a manner that is easily readable. Uses a dict for mapping from bit position to card symbol.  
 
 ## Versions
 There will be no official version until a working dumb AI has been created.  

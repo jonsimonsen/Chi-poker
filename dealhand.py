@@ -32,7 +32,6 @@ def processHand(hand):
     while(suit < 5):
         count = 0
         while(i < 13 and hand[i] < suit * 13 ):
-            #print(hand[i] % 13)
             suits[suit - 1] += 1 << (hand[i] % 13)
             count += 1
             i += 1
@@ -95,8 +94,23 @@ def printHand(hand):
     print(cards)
     return
 
+# Arrange a chinese pokerhand
+def arrangeHand(hand):
+    back = 0
+    middle = 0
+    front = 0
+
+    sfl = findStraightFlush(hand)
+    return
+
+# Check a hand for a straight flush. Return 0 if not found. Otherwise, return a number corresponding to the strength
+def findStraightFlush(hand):
+    # Consider the argument to be a reference so we can remove used cards from the hand
+    return
+
 # Test dealing a hand and printing it out
 nuts = dealHand()
 printCards(nuts)
 nuts= processHand(nuts)
 printHand(nuts)
+arrangeHand(nuts)
