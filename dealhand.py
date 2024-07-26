@@ -24,8 +24,9 @@ def processHand(hand):
         suits[suit -1] += addLengthBits(count)
         suit += 1
     
+    suits.sort(reverse=True)
     print(suits)
-    return
+    return suits
 
 # Create an int to encode the length of a suit as its most significant bits (for adding to the suit int)
 def addLengthBits(count):
@@ -33,23 +34,23 @@ def addLengthBits(count):
     match count:
         case 0:
             return 0
-        case 1 | 2 | 3 | 4:
+        case 1 | 2 | 3:
             return 0b1 << 13
-        case 5:
+        case 4:
             return 0b1 << 14
-        case 6:
+        case 5:
             return 0b11 << 13
-        case 7:
+        case 6:
             return 0b1 << 15
-        case 8:
+        case 7:
             return 0b101 << 13
-        case 9:
+        case 8:
             return 0b11 << 14
         case _:
             return 0b111 << 13
     
-# Print a hand showing cards in brackets for each suit
-def printHand(hand):
+# Print a hand showing cards in brackets for each suit. The input should be a newly generated (not processed) hand
+def printCards(hand):
     i = 0
     suit = 1
     cards = ""
@@ -67,5 +68,5 @@ def printHand(hand):
 
 # Test dealing a hand and printing it out
 nuts = dealHand()
-printHand(nuts)
-processHand(nuts)
+printCards(nuts)
+nuts= processHand(nuts)
