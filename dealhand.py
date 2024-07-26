@@ -106,23 +106,44 @@ def arrangeHand(hand):
 # Check a hand for a straight flush. Return None if not found. Otherwise, return a number corresponding to the strength
 def findStraightFlush(hand):
     if hand[0] < (0b11 << 13):
-        return None
+        return -1
     else:
         rank = findStraight(hand[0])
         if rank is None:
             if hand[1] <( 0b11 << 13):
-                return None
+                return -2
             else:
                 rank = findStraight(hand[1])
 
     return rank
 
 # Check a hand for a straight
-
+def findStraight(hand):
+    # Check for ordinary straight
+    bitmask = 0b11111
+    for i in reversed(range(9)):
+        if (hand & (bitmask << i)) == (bitmask << i):
+            return 8 - i
+    # Check for wheel
+    bitmask = 0b1111
+    if(hand & bitmask) == bitmask:
+        if(hand & 1 << 12):
+            return 9
+    return -3
 
 # Test dealing a hand and printing it out
-nuts = dealHand()
+""" nuts = dealHand()
 printCards(nuts)
 nuts= processHand(nuts)
 printHand(nuts)
-arrangeHand(nuts)
+arrangeHand(nuts) """
+
+# Test specific hands
+A_SFL = [0b1001111100000100, 0b101000100010001, 0b10000010100000, 0b10000001000000]
+T_SFL = [0b1001000111110000, 0b101000100010001, 0b10000010100000, 0b10000001000000]
+SIX_SFL = [0b1000000100011111, 0b101000100010001, 0b10000010100000, 0b10000001000000]
+WHEEL_FL = [0b1001000100001111, 0b101000100010001, 0b10000010100000, 0b10000001000000]
+print("Ace: " + str(findStraightFlush(A_SFL)))
+print("Ten: " + str(findStraightFlush(T_SFL)))
+print("Six: " + str(findStraightFlush(SIX_SFL)))
+print("Five: " + str(findStraightFlush(WHEEL_FL)))
