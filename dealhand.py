@@ -1,5 +1,21 @@
 import random
 
+CARDS = { # Key is position of the bit in the suit list
+  0: "2",
+  1: "3",
+  2: "4",
+  3: "5",
+  4: "6",
+  5: "7",
+  6: "8",
+  7: "9",
+  8: "T",
+  9: "J",
+  10: "Q",
+  11: "K",
+  12: "A"
+}
+
 # Deal a 13 card hand for Chinese poker (cards represented as numbers from 0 to 51)
 def dealHand():
     deck = list(range(52))
@@ -66,7 +82,21 @@ def printCards(hand):
     print(cards)
     return
 
+# Print a processed hand showing cards in brackets for each suit.
+def printHand(hand):
+    cards = ""
+    for suit in hand:
+        cards += "["
+        for card in reversed(range(13)):
+            bitmask = 0b1
+            if (suit & (bitmask << card)) == (bitmask << card):
+                cards += CARDS[card]
+        cards += "]"
+    print(cards)
+    return
+
 # Test dealing a hand and printing it out
 nuts = dealHand()
 printCards(nuts)
 nuts= processHand(nuts)
+printHand(nuts)
