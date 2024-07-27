@@ -1,4 +1,5 @@
 import random
+from constants import *
 from handtest import *
 
 CARDS = { # Key is position of the bit in the suit list
@@ -102,7 +103,9 @@ def arrangeHand(hand):
     front = 0
 
     sfl = findStraightFlush(hand)
-    return
+    if sfl is not None:
+        back = sfl
+    return [back, middle, front]
 
 # Check a hand for a straight flush. Return None if not found. Otherwise, return a number corresponding to the strength
 def findStraightFlush(hand):
@@ -127,10 +130,26 @@ def findStraight(hand):
             return 8 - i
     # Check for wheel
     bitmask = 0b1111
-    if(hand & bitmask) == bitmask:
-        if(hand & 1 << 12):
+    if (hand & bitmask) == bitmask:
+        if hand & (1 << 12):
             return 9
     return None
+
+# Track duplicate values
+def findDuplicates(hand):
+    duplications = []
+    for i in reversed(range(13)):
+        count = 0
+        for suit in hand:
+            if suit & (1 << i):
+                count += 1
+        duplications.append(count)
+    return duplications
+
+# Find Quads
+def findQuads(duplicates):
+    if 4 in duplicates:
+        return (duplicates.index(4)) + START_QUADS
 
 # Test dealing a hand and printing it out
 """ nuts = dealHand()
@@ -156,3 +175,9 @@ print("No SFL: " + str(findStraightFlush(BUST_544)))
 print("Distribution: " + str(findStraightFlush(BUST_553)))
 
 # Test specific Quad hands
+counts = findDuplicates(QUAD_A)
+rank = findQuads(counts)
+print("Quad A: " + str(rank))
+counts = findDuplicates(QUAD_2)
+rank = findQuads(counts)
+print("Quad 2: " + str(rank))
