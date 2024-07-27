@@ -1,4 +1,5 @@
 import random
+from handtest import *
 
 CARDS = { # Key is position of the bit in the suit list
   0: "2",
@@ -109,8 +110,8 @@ def findStraightFlush(hand):
         return -1
     else:
         rank = findStraight(hand[0])
-        if rank is None:
-            if hand[1] <( 0b11 << 13):
+        if rank == -3:
+            if hand[1] < ( 0b11 << 13):
                 return -2
             else:
                 rank = findStraight(hand[1])
@@ -138,12 +139,15 @@ nuts= processHand(nuts)
 printHand(nuts)
 arrangeHand(nuts) """
 
-# Test specific hands
-A_SFL = [0b1001111100000100, 0b101000100010001, 0b10000010100000, 0b10000001000000]
-T_SFL = [0b1001000111110000, 0b101000100010001, 0b10000010100000, 0b10000001000000]
-SIX_SFL = [0b1000000100011111, 0b101000100010001, 0b10000010100000, 0b10000001000000]
-WHEEL_FL = [0b1001000100001111, 0b101000100010001, 0b10000010100000, 0b10000001000000]
+# Test specific SFL hands
 print("Ace: " + str(findStraightFlush(A_SFL)))
 print("Ten: " + str(findStraightFlush(T_SFL)))
 print("Six: " + str(findStraightFlush(SIX_SFL)))
 print("Five: " + str(findStraightFlush(WHEEL_FL)))
+print("Others:")
+print("Ace: " + str(findStraightFlush(A_SFL6)))
+print("Six: " + str(findStraightFlush(WHEEL_FL6)))
+print("Ten (2nd): " + str(findStraightFlush(SFL_H2)))
+print("Wheel (2nd): " + str(findStraightFlush(WHEEL_FLH2)))
+
+# Test specific Quad hands
