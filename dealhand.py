@@ -98,13 +98,31 @@ def printHand(hand):
 
 # Arrange a chinese pokerhand
 def arrangeHand(hand):
-    back = 0
-    middle = 0
-    front = 0
+    back = -1
+    middle = -1
+    front = -1
+    state = -1
 
-    sfl = findStraightFlush(hand)
-    if sfl is not None:
-        back = sfl
+    while state < START_QUADS:
+        sfl = findStraightFlush(hand)
+        if sfl is None:
+            state = START_QUADS
+        elif back == -1:
+            back = sfl
+        else:
+            middle = sfl
+            state = START_THREE
+    duplicates = findDuplicates()
+    while state < START_FH:
+        quad = findQuads(duplicates)
+        if quad is None:
+            state = START_FH
+        elif back == -1:
+            back = quad
+        else:
+            middle = quad
+            state = START_THREE
+
     return [back, middle, front]
 
 # Check a hand for a straight flush. Return None if not found. Otherwise, return a number corresponding to the strength
@@ -150,6 +168,8 @@ def findDuplicates(hand):
 def findQuads(duplicates):
     if 4 in duplicates:
         return (duplicates.index(4)) + START_QUADS
+    else:
+        return None
 
 # Test dealing a hand and printing it out
 """ nuts = dealHand()
