@@ -1,7 +1,7 @@
 # Chi-Poker
 
 ## Intro
-The goal of the project is to create an AI for arranging Chinese Poker hands. It should not be perfected to such a degree that it would stand a chance against solid human opposition. It is hoped that the most advanced version would lose less than 0,1 bets per hand played against the best possible opposition.  
+The goal of the project is to create an AI for arranging Chinese Poker hands. It should not be perfected to such a degree that it would stand a chance against solid human opposition. It is hoped that the most advanced version would lose less than 0.1 bets per hand played against the best possible opposition.  
 
 ## Rules
 It is assumed that the reader knows general rules for Chinese Poker. Some program specific rules need to be clarified.  
@@ -24,7 +24,7 @@ There is no restriction against folding your hand
 There are no other bonus points to be had. Note that if both players have bonus points, they apply for both even if one of the players has a weaker bonus hand (f.ex. straight flush vs. quads in the back wins 1 point in total).  
 
 ## Weaknesses
-The plan is for the AI to optimalize their hands against a table of static hand values. This means that it does not take card removal into consideration. An example of a spot where it would be weak would be with a suit combination of 9-3-1-0. The best strategy here is presumably to take into account that the opposition is more likely to have flushes and generally stronger hands than average. This dictates a few adaptations.
+The plan is for the AI to optimalize their hands against a table of static hand values. This means that it does not take card removal into consideration. An example of a spot where it would be weak would be with a suit combination of 9-3-1-0. The best strategy here is presumably to take into account that the opposition is more likely to have flushes and generally stronger hands than average. This dictates a few adaptations.  
 
 - Straights and weak flushes (especially in the back) are worth less than normal since the opposition is more likely to have strong flushes there  
 - Very strong flushes and relatively weak full houses in the back are a bit stronger than normal since competent opposition is more likely to sacrifice the strength of their back for a stronger middle  

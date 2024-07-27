@@ -107,12 +107,12 @@ def arrangeHand(hand):
 # Check a hand for a straight flush. Return None if not found. Otherwise, return a number corresponding to the strength
 def findStraightFlush(hand):
     if hand[0] < (0b11 << 13):
-        return -1
+        return None
     else:
         rank = findStraight(hand[0])
-        if rank == -3:
+        if rank is None:
             if hand[1] < ( 0b11 << 13):
-                return -2
+                return None
             else:
                 rank = findStraight(hand[1])
 
@@ -130,7 +130,7 @@ def findStraight(hand):
     if(hand & bitmask) == bitmask:
         if(hand & 1 << 12):
             return 9
-    return -3
+    return None
 
 # Test dealing a hand and printing it out
 """ nuts = dealHand()
@@ -149,5 +149,10 @@ print("Ace: " + str(findStraightFlush(A_SFL6)))
 print("Six: " + str(findStraightFlush(WHEEL_FL6)))
 print("Ten (2nd): " + str(findStraightFlush(SFL_H2)))
 print("Wheel (2nd): " + str(findStraightFlush(WHEEL_FLH2)))
+
+# Test busted SFL hands
+print("Balanced: " + str(findStraightFlush(QUAD_A)))
+print("No SFL: " + str(findStraightFlush(BUST_544)))
+print("Distribution: " + str(findStraightFlush(BUST_553)))
 
 # Test specific Quad hands
