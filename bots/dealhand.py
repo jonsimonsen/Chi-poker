@@ -112,15 +112,27 @@ def arrangeHand(hand):
         else:
             middle = sfl
             state = START_THREE
-    duplicates = findDuplicates()
+    duplicates = findDuplicates(hand)
     while state < START_FH:
         quad = findQuads(duplicates)
         if quad is None:
             state = START_FH
         elif back == -1:
             back = quad
+            print(hand[0])
+            hand[0] = hand[0] ^ (0b1 << (22 - quad))
+            print(hand[0])
+            print(duplicates)
+            duplicates[quad - 10] = 0
+            print(duplicates)
         else:
             middle = quad
+            print(hand[0])
+            hand[0] = hand[0] ^ (0b1 << (22 - quad))
+            print(hand[0])
+            print(duplicates)
+            duplicates[quad - 10] = 0
+            print(duplicates)
             state = START_THREE
 
     return [back, middle, front]
@@ -130,12 +142,16 @@ def findStraightFlush(hand):
     if hand[0] < (0b11 << 13):
         return None
     else:
-        rank = findStraight(hand[0])
+        print("sf1pre: " + str(hand[0]))
+        rank = findStraight(hand)
+        print("sf1post: " + str(hand[0]))
         if rank is None:
             if hand[1] < ( 0b11 << 13):
                 return None
             else:
-                rank = findStraight(hand[1])
+                print("sf2pre: " + str(hand[1]))
+                rank = findStraight(hand)
+                print("sf2post: " + str(hand[1]))
 
     return rank
 
@@ -144,12 +160,18 @@ def findStraight(hand):
     # Check for ordinary straight
     bitmask = 0b11111
     for i in reversed(range(9)):
-        if (hand & (bitmask << i)) == (bitmask << i):
+        if (hand[0] & (bitmask << i)) == (bitmask << i):
+            print("spre: " + str(hand))
+            hand[0] = hand[0] ^ (bitmask << i)
+            print("spost: " + str(hand))
             return 8 - i
     # Check for wheel
     bitmask = 0b1111
-    if (hand & bitmask) == bitmask:
-        if hand & (1 << 12):
+    if (hand[0] & bitmask) == bitmask:
+        if hand[0] & (1 << 12):
+            print("wpre: " + str(hand))
+            hand[0] = hand[0] ^ 0b1000000001111
+            print("wpost: " +str(hand))
             return 9
     return None
 
