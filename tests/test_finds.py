@@ -1,5 +1,6 @@
 import test_context
-from bots.dealhand import *
+from hands.dealhand import *
+from tests.testhands import *
 
 def main():
     # Test specific SFL hands

@@ -1,21 +1,5 @@
 import random
-from bots.constants import *
-
-CARDS = { # Key is position of the bit in the suit list
-  0: "2",
-  1: "3",
-  2: "4",
-  3: "5",
-  4: "6",
-  5: "7",
-  6: "8",
-  7: "9",
-  8: "T",
-  9: "J",
-  10: "Q",
-  11: "K",
-  12: "A"
-}
+from hands.constants import *
 
 # Deal a 13 card hand for Chinese poker (cards represented as numbers from 0 to 51)
 def dealHand():

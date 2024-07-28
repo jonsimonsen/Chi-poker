@@ -1,5 +1,5 @@
 import test_context
-from bots.dealhand import *
+from hands.dealhand import *
 
 def main():
     # Test dealing a hand and printing it out
