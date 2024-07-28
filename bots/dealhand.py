@@ -1,6 +1,6 @@
 import random
-from constants import *
-from testhands import *
+from bots.constants import *
+from bots.testhands import *
 
 CARDS = { # Key is position of the bit in the suit list
   0: "2",
