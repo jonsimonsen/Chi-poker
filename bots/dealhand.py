@@ -1,6 +1,5 @@
 import random
 from bots.constants import *
-from bots.testhands import *
 
 CARDS = { # Key is position of the bit in the suit list
   0: "2",
@@ -95,47 +94,6 @@ def printHand(hand):
         cards += "]"
     print(cards)
     return
-
-# Arrange a chinese pokerhand
-def arrangeHand(hand):
-    back = -1
-    middle = -1
-    front = -1
-    state = -1
-
-    while state < START_QUADS:
-        sfl = findStraightFlush(hand)
-        if sfl is None:
-            state = START_QUADS
-        elif back == -1:
-            back = sfl
-        else:
-            middle = sfl
-            state = START_THREE
-    duplicates = findDuplicates(hand)
-    while state < START_FH:
-        quad = findQuads(duplicates)
-        if quad is None:
-            state = START_FH
-        elif back == -1:
-            back = quad
-            print(hand[0])
-            hand[0] = hand[0] ^ (0b1 << (22 - quad))
-            print(hand[0])
-            print(duplicates)
-            duplicates[quad - 10] = 0
-            print(duplicates)
-        else:
-            middle = quad
-            print(hand[0])
-            hand[0] = hand[0] ^ (0b1 << (22 - quad))
-            print(hand[0])
-            print(duplicates)
-            duplicates[quad - 10] = 0
-            print(duplicates)
-            state = START_THREE
-
-    return [back, middle, front]
 
 # Check a hand for a straight flush. Return None if not found. Otherwise, return a number corresponding to the strength
 def findStraightFlush(hand):
