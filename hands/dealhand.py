@@ -15,39 +15,55 @@ def processHand(hand):
     suits = [0, 0, 0, 0]
 
     while(suit < 5):
-        count = 0
         while(i < 13 and hand[i] < suit * 13 ):
             suits[suit - 1] += 1 << (hand[i] % 13)
-            count += 1
             i += 1
-        print("count: " + str(count))
-        suits[suit -1] += addLengthBits(count)
+        fixLengthBits(suits, suit - 1)
         suit += 1
     
     suits.sort(reverse=True)
     print(suits)
     return suits
+        
+def fixLengthBits(hand, suit):
+    print(type(hand[suit]))
+    if hand[suit] > MAX_CARDBITS:
+        #Strip lenght bits
+        bits = bin(hand[suit])[-13:]
+    else:
+        #Strip 0b
+        bits = bin(hand[suit])[2:]
+    print(type(bits))
+    cards = int(bits, 2)
+    print(cards)
 
-# Create an int to encode the length of a suit as its most significant bits (for adding to the suit int)
-def addLengthBits(count):
     # Python switch/case
-    match count:
+    match cards.bit_count():
         case 0:
-            return 0
+            hand[suit] = cards
+            print(hand[suit])
         case 1 | 2 | 3:
-            return 0b1 << 13
+            hand[suit] = cards + (0b1 << 13)
+            print(hand[suit])
         case 4:
-            return 0b1 << 14
+            hand[suit] = cards + (0b1 << 14)
+            print(hand[suit])
         case 5:
-            return 0b11 << 13
+            hand[suit] = cards + (0b11 << 13)
+            print(hand[suit])
         case 6:
-            return 0b1 << 15
+            hand[suit] = cards + (0b1 << 15)
+            print(hand[suit])
         case 7:
-            return 0b101 << 13
+            hand[suit] = cards + (0b101 << 13)
+            print(hand[suit])
         case 8:
-            return 0b11 << 14
+            hand[suit] = cards + (0b11 << 14)
+            print(hand[suit])
         case _:
-            return 0b111 << 13
+            hand[suit] = cards + (0b111 << 13)
+            print(hand[suit])
+
     
 # Print a hand showing cards in brackets for each suit. The input should be a newly generated (not processed) hand
 def printCards(hand):
@@ -85,37 +101,42 @@ def findStraightFlush(hand):
         return None
     else:
         print("sf1pre: " + str(hand[0]))
-        rank = findStraight(hand)
+        rank = findStraight(hand, 0)
         print("sf1post: " + str(hand[0]))
         if rank is None:
             if hand[1] < ( 0b11 << 13):
                 return None
             else:
                 print("sf2pre: " + str(hand[1]))
-                rank = findStraight(hand)
+                rank = findStraight(hand, 1)
                 print("sf2post: " + str(hand[1]))
 
     return rank
 
-# Check a hand for a straight
-def findStraight(hand):
-    # Check for ordinary straight
-    bitmask = 0b11111
-    for i in reversed(range(9)):
-        if (hand[0] & (bitmask << i)) == (bitmask << i):
-            print("spre: " + str(hand))
-            hand[0] = hand[0] ^ (bitmask << i)
-            print("spost: " + str(hand))
-            return 8 - i
-    # Check for wheel
-    bitmask = 0b1111
-    if (hand[0] & bitmask) == bitmask:
-        if hand[0] & (1 << 12):
-            print("wpre: " + str(hand))
-            hand[0] = hand[0] ^ 0b1000000001111
-            print("wpost: " +str(hand))
-            return 9
-    return None
+# Check a hand for a straight. If aa suit is passed, only the suit with that index is searched.
+def findStraight(hand, suit = 4):
+    #Simplified method if a single suit is passed
+    if suit < 4:
+        # Check for ordinary straight
+        bitmask = 0b11111
+        for i in reversed(range(9)):
+            if (hand[suit] & (bitmask << i)) == (bitmask << i):
+                print("spre: " + str(hand[suit]))
+                hand[suit] = hand[suit] ^ (bitmask << i)
+                fixLengthBits(hand, suit)
+                print("spost: " + str(hand[suit]))
+                return 8 - i
+        # Check for wheel
+        bitmask = 0b1111
+        if (hand[suit] & bitmask) == bitmask:
+            if hand[suit] & (1 << 12):
+                print("wpre: " + str(hand[suit]))
+                hand[suit] = hand[suit] ^ 0b1000000001111
+                fixLengthBits(hand, suit)
+                print("wpost: " +str(hand[suit]))
+                return 9
+        return None
+
 
 # Track duplicate values
 def findDuplicates(hand):

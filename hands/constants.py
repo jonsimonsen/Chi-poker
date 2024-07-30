@@ -21,3 +21,5 @@ CARDS = { # Key is position of the bit in the suit list
   11: "K",
   12: "A"
 }
+
+MAX_CARDBITS = 8191
