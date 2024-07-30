@@ -24,7 +24,9 @@ def processHand(hand):
     suits.sort(reverse=True)
     print(suits)
     return suits
-        
+
+# Create an int to encode the length of a suit as its most significant bits (for adding to the suit int)
+# Returns nothing, but alters the hand accordingly
 def fixLengthBits(hand, suit):
     print(type(hand[suit]))
     if hand[suit] > MAX_CARDBITS:
@@ -63,6 +65,7 @@ def fixLengthBits(hand, suit):
         case _:
             hand[suit] = cards + (0b111 << 13)
             print(hand[suit])
+    return
 
     
 # Print a hand showing cards in brackets for each suit. The input should be a newly generated (not processed) hand
