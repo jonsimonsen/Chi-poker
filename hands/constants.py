@@ -1,8 +1,28 @@
+#3-flushes
+F3_11 = 120
+F3_10 = 84
+F3_9 = 56
+F3_8 = 35
+F3_7 = 20
+F3_6 = 10
+F3_5 = 4
+F3_4 = 1 # Ignoring this when counting since straight flushes are its own category
+F3 = [F3_11, F3_10, F3_9, F3_8, F3_7, F3_6, F3_5]
+
 #Starting point of various hands in the rankings
 START_SFL = 0
 START_QUADS = 10
 START_FH = 23
 START_FL = 36
+START_F_AQ = 200
+START_F_K = 529
+START_F_Q = START_F_K + sum(F3)
+START_F_J = START_F_Q + sum(F3[1:])
+START_F_T = START_F_J + sum(F3[2:])
+START_F_9 = START_F_T + sum(F3[3:])
+START_F_8 = START_F_9 + sum(F3[4:])
+START_F_7 = START_F_8 + sum(F3[5:])
+START_STR = 1313
 
 START_THREE = 18000
 
