@@ -40,6 +40,21 @@ class Ai_gen0(Bot):
                     middle = quad
                     state = START_THREE
 
+            # Full house
+            lock = False
+            while state < START_FL:
+                fh = findFullHouse(self.hand, duplicates, lock)
+                if fh is None:
+                    state = START_FL
+                elif back == -1:
+                    back = fh
+                    self.locked_pairs = 1
+                    lock = True
+                else:
+                    middle = fh
+                    self.locked_pairs += 1
+                    state = START_THREE
+
             # Update board
             self.board = [back, middle, front]
 

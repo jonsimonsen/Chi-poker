@@ -5,6 +5,7 @@ class Bot(ABC):
     def __init__(self, hand):
         self.hand = hand
         self.board = [-1, -1, -1]
+        self.locked_pairs = 0
 
     # Use a bot-specific algorithm to build a board from the hand of the bot
     @abstractmethod

@@ -55,6 +55,16 @@ def fixLengthBits(hand, suit):
             hand[suit] = cards + (0b111 << 13)
     return
 
+# Track duplicate values
+def findDuplicates(hand):
+    duplicates = []
+    for i in reversed(range(13)):
+        count = 0
+        for suit in hand:
+            if suit & (1 << i):
+                count += 1
+        duplicates.append(count)
+    return duplicates
     
 # Print a hand showing cards in brackets for each suit. The input should be a newly generated (not processed) hand
 def printCards(hand):
@@ -86,7 +96,8 @@ def printHand(hand):
     print(cards)
     return
 
-# Check a hand for a straight flush. Return None if not found. Otherwise, return a number corresponding to the strength
+# Find straight flush.
+# Returns None if not found. Otherwise, returns a number corresponding to the strength
 def findStraightFlush(hand):
     for suit in range(2):
         if hand[suit] < (0b11 << 13):
@@ -115,33 +126,46 @@ def findStraightFlush(hand):
 
     return None
 
-# Check a hand for a straight. If aa suit is passed, only the suit with that index is searched.
-def findStraight(hand, suit = 4):
-        #Needs implementation
-        return None
-
-# Track duplicate values
-def findDuplicates(hand):
-    duplications = []
-    for i in reversed(range(13)):
-        count = 0
-        for suit in hand:
-            if suit & (1 << i):
-                count += 1
-        duplications.append(count)
-    return duplications
-
-# Find Quads
+# Find quads
 def findQuads(hand, duplicates):
     if 4 in duplicates:
         i = duplicates.index(4)
         print("index: " + str(i))
         for suit in range(4):
             print(hand[suit])
-            hand[suit] = hand[suit] ^ (0b1 << (12 - i))
+            removeCard(hand, suit, 12 - i)
             print(hand[suit])
             fixLengthBits(hand, suit)
             duplicates[i] = 0
         return i + START_QUADS
     else:
         return None
+    
+# Find full house
+def findFullHouse(hand, duplicates, lock=False):
+    target = 2
+    if 3 in duplicates: # Do we need to consider 4 as well? Should revisit this later
+        i = duplicates.index(3)
+        print("index: " + str(i))
+        if lock:
+            target = 3
+        if duplicates.count(3) + duplicates.count(2) >= target:
+            for suit in range(4):
+                print(hand[suit])
+                removeCard(hand, suit, 12 - i)
+                print(hand[suit])
+                fixLengthBits(hand, suit)
+                duplicates[i] = 0
+            hand.sort(reverse=True)
+            return i + START_FH
+    return None
+
+# Find straight.
+def findStraight(hand):
+        #Needs implementation
+        return None
+
+# Remove a card from a suit
+def removeCard(hand, suit, value):
+    # https://stackoverflow.com/questions/12173774/how-to-modify-bits-in-an-integer/12174125#12174125
+    hand[suit] &= ~ (1 << value)
