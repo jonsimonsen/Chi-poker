@@ -15,6 +15,7 @@ class Ai_gen0(Bot):
             front = -1
             state = -1
 
+            # Straight flush
             while state < START_QUADS:
                 sfl = findStraightFlush(self.hand)
                 if sfl is None:
@@ -24,31 +25,29 @@ class Ai_gen0(Bot):
                 else:
                     middle = sfl
                     state = START_THREE
+
+            # Find duplicates for Quads/Full house
             duplicates = findDuplicates(self.hand)
+            
+            # Quads
             while state < START_FH:
-                quad = findQuads(duplicates)
+                quad = findQuads(self.hand, duplicates)
                 if quad is None:
                     state = START_FH
                 elif back == -1:
                     back = quad
-                    print(self.hand[0])
-                    self.hand[0] = self.hand[0] ^ (0b1 << (22 - quad))
-                    print(self.hand[0])
-                    print(duplicates)
-                    duplicates[quad - 10] = 0
-                    print(duplicates)
                 else:
                     middle = quad
-                    print(self.hand[0])
-                    self.hand[0] = self.hand[0] ^ (0b1 << (22 - quad))
-                    print(self.hand[0])
-                    print(duplicates)
-                    duplicates[quad - 10] = 0
-                    print(duplicates)
                     state = START_THREE
+
+            # Update board
+            self.board = [back, middle, front]
 
 if __name__ == '__main__':
     hand = processHand(dealHand())
     dumb_bot = Ai_gen0(hand)
+    print("Start hand: ")
     printHand(dumb_bot.hand)
     dumb_bot.arrangeBoard()
+    print("Summary: " + str(dumb_bot.board))
+    printHand(dumb_bot.hand)

@@ -22,49 +22,37 @@ def processHand(hand):
         suit += 1
     
     suits.sort(reverse=True)
-    print(suits)
     return suits
 
 # Create an int to encode the length of a suit as its most significant bits (for adding to the suit int)
 # Returns nothing, but alters the hand accordingly
 def fixLengthBits(hand, suit):
-    print(type(hand[suit]))
     if hand[suit] > MAX_CARDBITS:
         #Strip lenght bits
         bits = bin(hand[suit])[-13:]
     else:
         #Strip 0b
         bits = bin(hand[suit])[2:]
-    print(type(bits))
     cards = int(bits, 2)
-    print(cards)
 
     # Python switch/case
     match cards.bit_count():
         case 0:
             hand[suit] = cards
-            print(hand[suit])
         case 1 | 2 | 3:
             hand[suit] = cards + (0b1 << 13)
-            print(hand[suit])
         case 4:
             hand[suit] = cards + (0b1 << 14)
-            print(hand[suit])
         case 5:
             hand[suit] = cards + (0b11 << 13)
-            print(hand[suit])
         case 6:
             hand[suit] = cards + (0b1 << 15)
-            print(hand[suit])
         case 7:
             hand[suit] = cards + (0b101 << 13)
-            print(hand[suit])
         case 8:
             hand[suit] = cards + (0b11 << 14)
-            print(hand[suit])
         case _:
             hand[suit] = cards + (0b111 << 13)
-            print(hand[suit])
     return
 
     
@@ -113,7 +101,7 @@ def findStraightFlush(hand):
                 print("sf2pre: " + str(hand[1]))
                 rank = findStraight(hand, 1)
                 print("sf2post: " + str(hand[1]))
-
+    hand.sort(reverse=True)
     return rank
 
 # Check a hand for a straight. If aa suit is passed, only the suit with that index is searched.
@@ -153,8 +141,16 @@ def findDuplicates(hand):
     return duplications
 
 # Find Quads
-def findQuads(duplicates):
+def findQuads(hand, duplicates):
     if 4 in duplicates:
-        return (duplicates.index(4)) + START_QUADS
+        i = duplicates.index(4)
+        print("index: " + str(i))
+        for suit in range(4):
+            print(hand[suit])
+            hand[suit] = hand[suit] ^ (0b1 << (12 - i))
+            print(hand[suit])
+            fixLengthBits(hand, suit)
+            duplicates[i] = 0
+        return i + START_QUADS
     else:
         return None

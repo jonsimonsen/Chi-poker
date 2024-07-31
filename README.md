@@ -31,7 +31,6 @@ The plan is for the AI to optimalize their hands against a table of static hand 
 - Fold more liberally than normal since the opposition is more likely to have strong/playable hands (especially if you have a somewhat normal amount of rank duplication)  
 
 ## Plans
-- Sort out the best way to update hands as they are being arranged. This should be handled ASAP to prevent having to modify all find functions later.
 - Create a function for searching a chinese hand for various poker hands (straight flush, quads etc.).
 - Create a function for rating a poker hand.
 - Create a dumb AI that focuses on optimizing the back first and then the middle.
@@ -52,6 +51,7 @@ The plan is for the AI to optimalize their hands against a table of static hand 
 ## Features
 - Create hands by treating each suit as an int where each bit represents one rank. We might want to create a class for the hands later
 - Enable printing processed hands in a manner that is easily readable. Uses a dict for mapping from bit position to card symbol.  
+- Create bots that are able to arrange their starting hand into a board. So far it is only able to detect SFLs and quads.
 
 ## Versions
 There will be no official version until a working dumb AI has been created.  
