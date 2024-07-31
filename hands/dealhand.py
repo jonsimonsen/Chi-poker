@@ -88,46 +88,37 @@ def printHand(hand):
 
 # Check a hand for a straight flush. Return None if not found. Otherwise, return a number corresponding to the strength
 def findStraightFlush(hand):
-    if hand[0] < (0b11 << 13):
-        return None
-    else:
-        print("sf1pre: " + str(hand[0]))
-        rank = findStraight(hand, 0)
-        print("sf1post: " + str(hand[0]))
-        if rank is None:
-            if hand[1] < ( 0b11 << 13):
-                return None
-            else:
-                print("sf2pre: " + str(hand[1]))
-                rank = findStraight(hand, 1)
-                print("sf2post: " + str(hand[1]))
-    hand.sort(reverse=True)
-    return rank
+    for suit in range(2):
+        if hand[suit] < (0b11 << 13):
+            return None
+        else:
+            #Check for ordinary straight
+            bitmask = 0b11111
+            for i in reversed(range(9)):
+                if (hand[suit] & (bitmask << i)) == (bitmask << i):
+                    print("spre: " + str(hand[suit]))
+                    hand[suit] = hand[suit] ^ (bitmask << i)
+                    fixLengthBits(hand, suit)
+                    print("spost: " + str(hand[suit]))
+                    hand.sort(reverse=True)
+                    return 8 - i
+            # Check for wheel
+            bitmask = 0b1111
+            if (hand[suit] & bitmask) == bitmask:
+                if hand[suit] & (1 << 12):
+                    print("wpre: " + str(hand[suit]))
+                    hand[suit] = hand[suit] ^ 0b1000000001111
+                    fixLengthBits(hand, suit)
+                    print("wpost: " +str(hand[suit]))
+                    hand.sort(reverse=True)
+                    return 9
+
+    return None
 
 # Check a hand for a straight. If aa suit is passed, only the suit with that index is searched.
 def findStraight(hand, suit = 4):
-    #Simplified method if a single suit is passed
-    if suit < 4:
-        # Check for ordinary straight
-        bitmask = 0b11111
-        for i in reversed(range(9)):
-            if (hand[suit] & (bitmask << i)) == (bitmask << i):
-                print("spre: " + str(hand[suit]))
-                hand[suit] = hand[suit] ^ (bitmask << i)
-                fixLengthBits(hand, suit)
-                print("spost: " + str(hand[suit]))
-                return 8 - i
-        # Check for wheel
-        bitmask = 0b1111
-        if (hand[suit] & bitmask) == bitmask:
-            if hand[suit] & (1 << 12):
-                print("wpre: " + str(hand[suit]))
-                hand[suit] = hand[suit] ^ 0b1000000001111
-                fixLengthBits(hand, suit)
-                print("wpost: " +str(hand[suit]))
-                return 9
+        #Needs implementation
         return None
-
 
 # Track duplicate values
 def findDuplicates(hand):
