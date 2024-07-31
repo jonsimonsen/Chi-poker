@@ -160,6 +160,20 @@ def findFullHouse(hand, duplicates, lock=False):
             return i + START_FH
     return None
 
+# Find flush
+def findFlush(hand):
+    if hand[0] < (0b11 << 13):
+        return None
+    
+    suit = 0
+    # Check if the second suit has a higher flush than the first
+    if hand[1] > (0b11 << 13) and hand[0] > (0b1 < 15):
+        if (hand[1] % 8192) > (hand[0] % 8192):
+            suit = 1
+
+    # Collect cards for the highest possible flush
+
+
 # Find straight.
 def findStraight(hand):
         #Needs implementation
