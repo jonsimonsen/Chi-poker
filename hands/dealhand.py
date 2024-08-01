@@ -172,6 +172,16 @@ def findFlush(hand):
             suit = 1
 
     # Collect cards for the highest possible flush
+    flush = []
+    for i in reversed(range(13)):
+        if hand[suit] & 1 << i:
+            flush.append(i)
+    print(flush)
+
+    #Find rank
+    rank = START_FLUSH[(12 - flush[0])]
+    rank += F3[(12 - flush[1])]
+    rank += F2[(12 - flush[2])]
 
 
 # Find straight.

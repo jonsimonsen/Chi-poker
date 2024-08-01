@@ -55,6 +55,9 @@ class Ai_gen0(Bot):
                     self.locked_pairs += 1
                     state = START_THREE
 
+            # Flush
+            flush = findFlush(self.hand)
+
             # Update board
             self.board = [back, middle, front]
 

@@ -20,6 +20,14 @@ def main():
     print("Summary: " + str(dumb_bot2.board))
     printHand(dumb_bot2.hand)
 
+    hand_4 = A_FLUSH
+    dumb_bot4 = Ai_gen0(hand_4)
+    print("Start hand: ")
+    printHand(dumb_bot4.hand)
+    dumb_bot4.arrangeBoard()
+    print("Summary: " + str(dumb_bot4.board))
+    printHand(dumb_bot4.hand)
+
 if __name__ == '__main__':
     main()
     
