@@ -177,11 +177,25 @@ def findFlush(hand):
         if hand[suit] & 1 << i:
             flush.append(i)
     print(flush)
+    
+    # Make sure that there is no straight flush
+    if flush[0] - flush[4] == 4:
+        return None
 
     #Find rank
-    rank = START_FLUSH[(12 - flush[0])]
-    rank += F3[(12 - flush[1])]
-    rank += F2[(12 - flush[2])]
+    rank = START_FLUSHES[(12 - flush[0])] - 1
+    print("Rank: " + str(rank))
+    for i in range(flush[0] - 1, flush[1], -1):
+        rank += F3[(11 - i)]
+    print("Rank: " + str(rank))
+    for i in range(flush[1] - 1, flush[2], -1):
+        rank += F2[(10 - i)]
+    print("Rank: " + str(rank))
+    for i in range(flush[2] - 1, flush[3], -1):
+        rank += i
+    print("Rank: " + str(rank))
+    rank += flush[3] - (flush[4] + 1)
+    print("Rank: " + str(rank))
 
 
 # Find straight.
