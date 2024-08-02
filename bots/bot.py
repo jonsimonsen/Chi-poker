@@ -116,8 +116,27 @@ class Bot(ABC):
         # Make sure that there is no straight flush
         if flush[0] - flush[4] == 4:
             return None
+        
+        # Make sure that the flush does no contain a locked pair
+        lock = True
+        low_pair = -1
+        if self.locked_pairs > 0:
+            for i in range(13):
+                if (self.duplicates[i] > 1):
+                    if i not in (flush[4::-1]):
+                        lock = False
+                        break
+                    elif low_pair == -1:
+                        low_pair = i
 
-        #Find rank
+        if lock:
+            flush.remove(low_pair)
+            if len(flush) < 5:
+                return None
+                
+        
+
+        # Find rank
         rank = START_FLUSHES[(12 - flush[0])] - 1
         print("Rank: " + str(rank))
         for i in range(flush[0] - 1, flush[1], -1):
@@ -131,6 +150,14 @@ class Bot(ABC):
         print("Rank: " + str(rank))
         rank += flush[3] - (flush[4] + 1)
         print("Rank: " + str(rank))
+
+        # Remove flush cards
+        if self.hand[suit] < (0b1 < 15):
+            self.hand[suit] = 0
+        else:
+            for value in flush:
+                removeCard(self.hand, suit, value)
+        return rank
 
     def findStraight(hand):
         """ Return a number for the rank of the straight

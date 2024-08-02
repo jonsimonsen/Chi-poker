@@ -69,7 +69,15 @@ class Ai_gen0(Bot):
                 state = START_THREE
 
         # Flush
-        flush = self.findFlush()
+        while state < START_STR:
+            flush = self.findFlush()
+            if flush is None:
+                state = START_STR
+            elif back == -1:
+                back = flush
+            else:
+                middle = flush
+                state = START_THREE
 
         # Update board
         self.board = [back, middle, front]
