@@ -1,98 +1,115 @@
-# Class for Chinese poker bot
+"""A parent class for Chinese poker bots
+
+The class defines variables shared by all bots.
+arrangeBoard() is an abstract method for arranging the hands.
+Methods to find poker hands can be used or overwritten by children.
+"""
+
 from abc import ABC, abstractmethod
+from hands.dealhand import *
 
 class Bot(ABC):
+    """ Class for a Chinese poker bot """
     def __init__(self, hand):
         self.hand = hand
         self.board = [-1, -1, -1]
         self.locked_pairs = 0
+        self.duplicates = []
 
-    # Use a bot-specific algorithm to build a board from the hand of the bot
+    
     @abstractmethod
     def arrangeBoard(self):
+        # Build a board from the hand of the bot
+        # Override the method for all child classes
         pass
 
     # Base methods for finding various poker hands
 
-    # Find straight flush.
-    # Returns None if not found. Otherwise, returns a number corresponding to the strength
-    def findStraightFlush(hand):
+    def findStraightFlush(self):
+        """ Return a number for the rank of the straight flush
+
+        Lower numbers mean a stronger hand.
+        Return None if no straight flush is found.
+        """
         for suit in range(2):
-            if hand[suit] < (0b11 << 13):
+            if self.hand[suit] < (0b11 << 13):
                 return None
             else:
                 #Check for ordinary straight
                 bitmask = 0b11111
                 for i in reversed(range(9)):
-                    if (hand[suit] & (bitmask << i)) == (bitmask << i):
-                        print("spre: " + str(hand[suit]))
-                        hand[suit] = hand[suit] ^ (bitmask << i)
-                        fixLengthBits(hand, suit)
-                        print("spost: " + str(hand[suit]))
-                        hand.sort(reverse=True)
+                    if (self.hand[suit] & (bitmask << i)) == (bitmask << i):
+                        self.hand[suit] = self.hand[suit] ^ (bitmask << i)
+                        fixLengthBits(self.hand, suit)
+                        self.hand.sort(reverse=True)
                         return 8 - i
                 # Check for wheel
                 bitmask = 0b1111
-                if (hand[suit] & bitmask) == bitmask:
-                    if hand[suit] & (1 << 12):
-                        print("wpre: " + str(hand[suit]))
-                        hand[suit] = hand[suit] ^ 0b1000000001111
-                        fixLengthBits(hand, suit)
-                        print("wpost: " +str(hand[suit]))
-                        hand.sort(reverse=True)
+                if (self.hand[suit] & bitmask) == bitmask:
+                    if self.hand[suit] & (1 << 12):
+                        self.hand[suit] = self.hand[suit] ^ 0b1000000001111
+                        fixLengthBits(self.hand, suit)
+                        self.hand.sort(reverse=True)
                         return 9
 
         return None
     
-    # Find quads
-    def findQuads(hand, duplicates):
-        if 4 in duplicates:
-            i = duplicates.index(4)
-            print("index: " + str(i))
+    def findQuads(self):
+        """ Return a number for the rank of the quads
+
+        Lower numbers mean a stronger hand.
+        Return None if no quad hand is found.
+        """
+        if 4 in self.duplicates:
+            i = self.duplicates.index(4)
             for suit in range(4):
-                print(hand[suit])
-                removeCard(hand, suit, 12 - i)
-                print(hand[suit])
-                fixLengthBits(hand, suit)
-                duplicates[i] = 0
+                removeCard(self.hand, suit, 12 - i)
+                fixLengthBits(self.hand, suit)
+                self.duplicates[i] = 0
             return i + START_QUADS
         else:
             return None
     
-    # Find full house
-    def findFullHouse(hand, duplicates, lock=False):
+    def findFullHouse(self):
+        """ Return a number for the rank of the full house
+
+        Lower numbers mean a stronger hand.
+        Return None if no full house is found.
+        """
         target = 2
-        if 3 in duplicates: # Do we need to consider 4 as well? Should revisit this later
-            i = duplicates.index(3)
-            print("index: " + str(i))
-            if lock:
+        if 3 in self.duplicates: # Do we need to consider 4 as well? Should revisit this later
+            i = self.duplicates.index(3)
+            if self.locked_pairs > 0:
                 target = 3
-            if duplicates.count(3) + duplicates.count(2) >= target:
+            if self.duplicates.count(3) + self.duplicates.count(2) >= target:
                 for suit in range(4):
-                    print(hand[suit])
-                    removeCard(hand, suit, 12 - i)
-                    print(hand[suit])
-                    fixLengthBits(hand, suit)
-                    duplicates[i] = 0
-                hand.sort(reverse=True)
+                    removeCard(self.hand, suit, 12 - i)
+                    fixLengthBits(self.hand, suit)
+                    self.duplicates[i] = 0
+                self.hand.sort(reverse=True)
                 return i + START_FH
         return None
 
-    # Find flush
-    def findFlush(hand):
-        if hand[0] < (0b11 << 13):
+    def findFlush(self):
+        """ Return a number for the rank of the flush
+
+        Lower numbers mean a stronger hand.
+        Return None if no flush is found or a straight flush is found.
+        """
+
+        if self.hand[0] < (0b11 << 13):
             return None
         
         suit = 0
         # Check if the second suit has a higher flush than the first
-        if hand[1] > (0b11 << 13) and hand[0] > (0b1 < 15):
-            if (hand[1] % 8192) > (hand[0] % 8192):
+        if self.hand[1] > (0b11 << 13) and self.hand[0] > (0b1 < 15):
+            if (self.hand[1] % 8192) > (self.hand[0] % 8192):
                 suit = 1
 
         # Collect cards for the highest possible flush
         flush = []
         for i in reversed(range(13)):
-            if hand[suit] & 1 << i:
+            if self.hand[suit] & 1 << i:
                 flush.append(i)
         print(flush)
         
@@ -115,8 +132,11 @@ class Bot(ABC):
         rank += flush[3] - (flush[4] + 1)
         print("Rank: " + str(rank))
 
-
-    # Find straight.
     def findStraight(hand):
-            #Needs implementation
-            return None
+        """ Return a number for the rank of the straight
+
+        Lower numbers mean a stronger hand.
+        Return None if no straight is found.
+        """
+        #Needs implementation
+        return None
