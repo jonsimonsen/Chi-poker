@@ -123,14 +123,14 @@ class Bot(ABC):
         if self.locked_pairs > 0:
             lock = True
             low_pair = -1
-            for i in reversed(range(13)):
-                if (self.duplicates[i] > 1):
+            for i in range(13):
+                if (list(reversed(self.duplicates))[i] > 1):
                     print(i)
-                    if (12 - i) not in (flush[4::-1]):
+                    if (i) not in (flush[4::-1]):
                         lock = False
                         break
                     elif low_pair == -1:
-                        low_pair = 12 - i
+                        low_pair = i
             print(lock)
             print(low_pair)
 
