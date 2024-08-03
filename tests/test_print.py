@@ -1,3 +1,7 @@
+""" A test function for printing both unprocessed and processed hands
+
+"""
+
 import test_context
 from hands.dealhand import *
 

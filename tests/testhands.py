@@ -1,3 +1,7 @@
+""" Constants for test hands
+
+"""
+
 # Example suits
 NO_HAND = 0
 ONE_CARD = 0b10000001000000

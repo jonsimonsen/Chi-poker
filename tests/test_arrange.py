@@ -1,3 +1,8 @@
+""" Test board arrangement for the gen 0 bot
+
+Tests some selected hand types
+"""
+
 import test_context
 from hands.dealhand import *
 from bots.bot_gen0 import *
