@@ -113,6 +113,7 @@ class Bot(ABC):
             if self.hand[suit] & 1 << i:
                 flush.append(i)
         print(flush)
+        print(self.duplicates)
         
         # Make sure that there is no straight flush
         if flush[0] - flush[4] == 4:
@@ -124,13 +125,17 @@ class Bot(ABC):
             low_pair = -1
             for i in reversed(range(13)):
                 if (self.duplicates[i] > 1):
-                    if i not in (flush[4::-1]):
+                    print(i)
+                    if (12 - i) not in (flush[4::-1]):
                         lock = False
                         break
                     elif low_pair == -1:
-                        low_pair = i
+                        low_pair = 12 - i
+            print(lock)
+            print(low_pair)
 
             if lock:
+                print("Fixing")
                 flush.remove(low_pair)
                 if len(flush) < 5:
                     return None
@@ -156,6 +161,7 @@ class Bot(ABC):
         else:
             for value in flush:
                 removeCard(self.hand, suit, value)
+            fixLengthBits(self.hand, suit)
         return rank
 
     def findStraight(hand):
