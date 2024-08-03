@@ -87,6 +87,7 @@ class Bot(ABC):
                     fixLengthBits(self.hand, suit)
                     self.duplicates[i] = 0
                 self.hand.sort(reverse=True)
+                printHand(self.hand)
                 return i + START_FH
         return None
 
@@ -117,11 +118,11 @@ class Bot(ABC):
         if flush[0] - flush[4] == 4:
             return None
         
-        # Make sure that the flush does no contain a locked pair
-        lock = True
-        low_pair = -1
+        # Make sure that the flush does not contain a locked pair
         if self.locked_pairs > 0:
-            for i in range(13):
+            lock = True
+            low_pair = -1
+            for i in reversed(range(13)):
                 if (self.duplicates[i] > 1):
                     if i not in (flush[4::-1]):
                         lock = False
@@ -129,12 +130,10 @@ class Bot(ABC):
                     elif low_pair == -1:
                         low_pair = i
 
-        if lock:
-            flush.remove(low_pair)
-            if len(flush) < 5:
-                return None
-                
-        
+            if lock:
+                flush.remove(low_pair)
+                if len(flush) < 5:
+                    return None
 
         # Find rank
         rank = START_FLUSHES[(12 - flush[0])] - 1
