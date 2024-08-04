@@ -1,10 +1,10 @@
-"""A child class for the dumbest Chinese poker bot
+"""A child class for the dumbest Chinese poker bot.
 
 The bot always arranges the strongest hand in the back.
 Then it arranges the strongest remaining hand in the middle.
 It never folds.
 
-arrangeBoard() handles the hand arrangement.
+arrangeBoard() handles the arrangement of board and hand.
 """
 
 if __name__ == '__main__':
@@ -15,12 +15,12 @@ from hands.dealhand import *
 import random
 
 class Ai_gen0(Bot):
-    """ Class for a generation 0 poker bot """
+    """Class for a generation 0 poker bot."""
     def __init__(self, hand):
         super().__init__(hand)
 
     def arrangeBoard(self):
-        """ Update the board for the poker bot
+        """Update the board for the poker bot.
 
         Put the strongest hand in the back.
         Then put the strongest remaining hand in the middle. 
@@ -28,56 +28,56 @@ class Ai_gen0(Bot):
         back = -1
         middle = -1
         front = -1
-        state = -1
+        board_rank = -1
 
         # Straight flush
-        while state < START_QUADS:
+        while board_rank < START_QUADS:
             sfl = self.findStraightFlush()
             if sfl is None:
-                state = START_QUADS
+                board_rank = START_QUADS
             elif back == -1:
                 back = sfl
             else:
                 middle = sfl
-                state = START_THREE
+                board_rank = START_THREE
 
         # Find duplicates for Quads/Full house
         self.duplicates = findDuplicates(self.hand)
         
         # Quads
-        while state < START_FH:
+        while board_rank < START_FH:
             quad = self.findQuads()
             if quad is None:
-                state = START_FH
+                board_rank = START_FH
             elif back == -1:
                 back = quad
             else:
                 middle = quad
-                state = START_THREE
+                board_rank = START_THREE
 
         # Full house
-        while state < START_FL:
+        while board_rank < START_FL:
             fh = self.findFullHouse()
             if fh is None:
-                state = START_FL
+                board_rank = START_FL
             elif back == -1:
                 back = fh
                 self.locked_pairs = 1
             else:
                 middle = fh
                 self.locked_pairs += 1
-                state = START_THREE
+                board_rank = START_THREE
 
         # Flush
-        while state < START_STR:
+        while board_rank < START_STR:
             flush = self.findFlush()
             if flush is None:
-                state = START_STR
+                board_rank = START_STR
             elif back == -1:
                 back = flush
             else:
                 middle = flush
-                state = START_THREE
+                board_rank = START_THREE
 
         # Update board
         self.board = [back, middle, front]

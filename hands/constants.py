@@ -1,4 +1,4 @@
-""" Constants for use in arranging and manipulating hands
+"""Constants for use in arranging and manipulating hands.
 
 We might want to move some of these into other files later.
 """

@@ -1,4 +1,4 @@
-"""A parent class for Chinese poker bots
+"""A parent class for Chinese poker bots.
 
 The class defines variables shared by all bots.
 arrangeBoard() is an abstract method for arranging the hands.
@@ -9,7 +9,7 @@ from abc import ABC, abstractmethod
 from hands.dealhand import *
 
 class Bot(ABC):
-    """ Class for a Chinese poker bot """
+    """Class for a Chinese poker bot."""
     def __init__(self, hand):
         self.hand = hand
         self.board = [-1, -1, -1]
@@ -26,7 +26,7 @@ class Bot(ABC):
     # Base methods for finding various poker hands
 
     def findStraightFlush(self):
-        """ Return a number for the rank of the straight flush
+        """Return a number for the rank of the straight flush.
 
         Lower numbers mean a stronger hand.
         Return None if no straight flush is found.
@@ -55,7 +55,7 @@ class Bot(ABC):
         return None
     
     def findQuads(self):
-        """ Return a number for the rank of the quads
+        """Return a number for the rank of the quads.
 
         Lower numbers mean a stronger hand.
         Return None if no quad hand is found.
@@ -71,7 +71,7 @@ class Bot(ABC):
             return None
     
     def findFullHouse(self):
-        """ Return a number for the rank of the full house
+        """Return a number for the rank of the full house.
 
         Lower numbers mean a stronger hand.
         Return None if no full house is found.
@@ -92,7 +92,7 @@ class Bot(ABC):
         return None
 
     def findFlush(self):
-        """ Return a number for the rank of the flush
+        """Return a number for the rank of the flush.
 
         Lower numbers mean a stronger hand.
         Return None if no flush is found or a straight flush is found.
@@ -165,7 +165,7 @@ class Bot(ABC):
         return rank
 
     def findStraight(hand):
-        """ Return a number for the rank of the straight
+        """Return a number for the rank of the straight.
 
         Lower numbers mean a stronger hand.
         Return None if no straight is found.
