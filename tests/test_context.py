@@ -1,6 +1,6 @@
-""" Set context for bots
+"""Set context for bots.
 
-This enables imports of other modules from the project
+This enables imports of other modules from the project.
 """
 
 import os # https://docs.python-guide.org/writing/structure/

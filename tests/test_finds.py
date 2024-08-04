@@ -1,4 +1,4 @@
-""" Test various find functions
+"""Test various find functions.
 
 All tests are currently commented out.
 The tests need to be refactored since the find functions were moved.

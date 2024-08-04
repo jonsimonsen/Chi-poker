@@ -1,6 +1,6 @@
-""" Test board arrangement for the gen 0 bot
+"""Test board arrangement for the gen 0 bot.
 
-Tests some selected hand types
+Tests some selected hand types.
 """
 
 import test_context
