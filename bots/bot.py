@@ -23,6 +23,13 @@ class Bot(ABC):
         # Override the method for all child classes
         pass
 
+    def resetHand(self, hand):
+        """Reset all variables on an existing bot object.
+        
+        Call __init__ with the given hand.
+        """
+        self.__init__(hand)
+
     # Base methods for finding various poker hands
 
     def findStraightFlush(self):
