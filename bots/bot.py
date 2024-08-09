@@ -166,7 +166,7 @@ class Bot(ABC):
         if self.hand[suit] < (0b1 < 15):
             self.hand[suit] = 0
         else:
-            for value in flush:
+            for value in flush[:5]:
                 removeCard(self.hand, suit, value)
             fixLengthBits(self.hand, suit)
         return rank
