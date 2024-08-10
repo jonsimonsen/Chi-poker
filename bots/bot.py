@@ -171,11 +171,32 @@ class Bot(ABC):
             fixLengthBits(self.hand, suit)
         return rank
 
-    def findStraight(hand):
+    def findStraight(self):
         """Return a number for the rank of the straight.
 
         Lower numbers mean a stronger hand.
         Return None if no straight is found.
         """
-        #Needs implementation
+
+        #Update duplicates
+        self.duplicates = findDuplicates(self.hand)
+
+        upper_bound = 0
+        lower_bound = 0
+
+        #Search for straights containing a T
+        if self.duplicates[4] > 0:
+            for i in range(4, 0, -1):
+                if self.duplicates[i] == 0:
+                    upper_bound = i + 1
+                    break
+            for j in range(5, upper_bound + 5):
+                if self.duplicates[j] == 0:
+                    lower_bound = j - 1
+                    break
+            if lower_bound == 0:
+                lower_bound = upper_bound + 4
+
+        print("upper: " + str(upper_bound) + " , lower: " + str(lower_bound))
+
         return None

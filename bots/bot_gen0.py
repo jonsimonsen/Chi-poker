@@ -79,6 +79,9 @@ class Ai_gen0(Bot):
                 middle = flush
                 board_rank = START_THREE
 
+        # Straight
+        straight = self.findStraight()
+
         # Update board
         self.board = [back, middle, front]
 
