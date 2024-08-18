@@ -181,46 +181,45 @@ class Bot(ABC):
         # Update duplicates
         self.duplicates = findDuplicates(self.hand)
 
-        upper_bound = 0
-        lower_bound = 0
+        indices = []
 
         # Search for straights containing a T
         if self.duplicates[4] > 0:
-            for i in range(3, -1, -1):
-                if self.duplicates[i] == 0:
-                    upper_bound = i + 1
-                    break
-            for j in range(5, upper_bound + 5):
-                if self.duplicates[j] == 0:
-                    lower_bound = j - 1
-                    break
-            if lower_bound == 0:
-                lower_bound = upper_bound + 4
-
-        print("upper: " + str(upper_bound) + " , lower: " + str(lower_bound))
-        if upper_bound == lower_bound + 4:
-            return upper_bound
+            indices = self.findsequence(4, 0)
+            if indices[1] == indices[0] + 4:
+                return indices[0]
         
         # Search for straights containing a 5
         if self.duplicates[9] > 0:
-            for i in range(8, lower_bound + 1, -1):
-                if self.duplicates[i] == 0:
-                    upper_bound = i + 1
-                    break
-            lower_bound = 0
-            for j in range(10, upper_bound + 5):
-                # Check Ace as a one (for a wheel)
-                if j == 14:
-                    if self.duplicates[0] == 0:
-                        lower_bound = j - 1
-                elif self.duplicates[j] == 0:
-                    lower_bound = j - 1
-                    break
-            if lower_bound == 0:
-                lower_bound = upper_bound + 4
-
-        print("upper: " + str(upper_bound) + " , lower: " + str(lower_bound))
-        if upper_bound == lower_bound + 4:
-            return upper_bound
+            indices = self.findsequence(9, indices[1] + 2)
+            if indices[1] == indices[0] + 4:
+                return indices[0]
 
         return None
+    
+    def findsequence(self, card_index, min_index):
+        """Return the lowest and highest index in the sequence.
+        
+        card_index is the index of a card in the sequence.
+        min_index is the minimum index in the sequence.
+        the function is used to find straights.
+        """
+        low_index = min_index
+        high_index = 0
+        for i in range(card_index - 1, min_index - 1, -1):
+            if self.duplicates[i] == 0:
+                low_index = i + 1
+                break
+        for j in range(card_index + 1, low_index + 5):
+            # Check Ace as a one (for a wheel)
+            if j == 14:
+                if self.duplicates[0] == 0:
+                    high_index = j - 1
+            elif self.duplicates[j] == 0:
+                high_index = j - 1
+                break
+        if high_index == 0:
+            high_index = low_index + 4
+
+        print("upper: " + str(low_index) + " , lower: " + str(high_index))
+        return [low_index, high_index]
