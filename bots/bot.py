@@ -182,22 +182,52 @@ class Bot(ABC):
         self.duplicates = findDuplicates(self.hand)
 
         indices = []
+        legal_straight = True
+        high_pair = -1
 
         # Search for straights containing a T
         if self.duplicates[4] > 0:
-            indices = self.findsequence(4, 0)
+            indices = self.findSequence(4, 0)
             if indices[1] == indices[0] + 4:
-                return indices[0]
+                if self.locked_pairs > 0:
+                    for i in range(12, -1, -1):
+                        if self.duplicates[i] > 1:
+                            if i > indices[1]:
+                                break
+                            elif i < indices[0]:
+                                legal_straight = True
+                                break
+                            else:
+                                legal_straight = False
+                                high_pair = i
+                if legal_straight:
+                    return indices[0]
+                
+            # Do a new search if the found straight was not legal
+            if high_pair in range(0, 4):
+                indices = self.findSequence(4, high_pair + 1)
+                if indices[1] == indices[0] + 4:
+                    return indices[0]
         
         # Search for straights containing a 5
         if self.duplicates[9] > 0:
-            indices = self.findsequence(9, indices[1] + 2)
+            min_index = 0
+            if high_pair > 4:
+                min_index = high_pair + 1
+            else:
+                min_index = indices[1] + 2
+            indices = self.findSequence(9, min_index)
             if indices[1] == indices[0] + 4:
-                return indices[0]
+                if (indices[1] == 13) and (high_pair == 0):
+                    for i in range(8, 0, -1):
+                        if self.duplicates[i] > 1:
+                            return indices[0]
+                else:
+                    return indices[0]
 
         return None
     
-    def findsequence(self, card_index, min_index):
+    def findSequence(self, card_index, min_index):
         """Return the lowest and highest index in the sequence.
         
         card_index is the index of a card in the sequence.
