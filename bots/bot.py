@@ -178,15 +178,15 @@ class Bot(ABC):
         Return None if no straight is found.
         """
 
-        #Update duplicates
+        # Update duplicates
         self.duplicates = findDuplicates(self.hand)
 
         upper_bound = 0
         lower_bound = 0
 
-        #Search for straights containing a T
+        # Search for straights containing a T
         if self.duplicates[4] > 0:
-            for i in range(4, 0, -1):
+            for i in range(3, -1, -1):
                 if self.duplicates[i] == 0:
                     upper_bound = i + 1
                     break
@@ -198,5 +198,29 @@ class Bot(ABC):
                 lower_bound = upper_bound + 4
 
         print("upper: " + str(upper_bound) + " , lower: " + str(lower_bound))
+        if upper_bound == lower_bound + 4:
+            return upper_bound
+        
+        # Search for straights containing a 5
+        if self.duplicates[9] > 0:
+            for i in range(8, lower_bound + 1, -1):
+                if self.duplicates[i] == 0:
+                    upper_bound = i + 1
+                    break
+            lower_bound = 0
+            for j in range(10, upper_bound + 5):
+                # Check Ace as a one (for a wheel)
+                if j == 14:
+                    if self.duplicates[0] == 0:
+                        lower_bound = j - 1
+                elif self.duplicates[j] == 0:
+                    lower_bound = j - 1
+                    break
+            if lower_bound == 0:
+                lower_bound = upper_bound + 4
+
+        print("upper: " + str(upper_bound) + " , lower: " + str(lower_bound))
+        if upper_bound == lower_bound + 4:
+            return upper_bound
 
         return None
