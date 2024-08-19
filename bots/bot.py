@@ -14,9 +14,8 @@ class Bot(ABC):
         self.suits = hand
         self.board = [-1, -1, -1]
         self.locked_pairs = 0
-        self.high_card = False
+        self.pair_count = -1
         self.ranks = []
-
     
     @abstractmethod
     def arrangeBoard(self):
@@ -260,17 +259,52 @@ class Bot(ABC):
         # Check if trips(or pairs) is possible
         pair_count = self.ranks.count(3) + self.ranks.count(2)
         if pair_count == 0 or (self.locked_pairs == 1 and pair_count < 2):
-            self.high_card = True
+            self.pair_count = 0
             return None
+        self.pair_count = pair_count
+        if self.locked_pairs:
+            self.pair_count -= 1
 
         if 3 in self.ranks:
             i = self.ranks.index(3)
             self.ranks[i] = 0
+            self.pair_count -= 1
             return i + START_TRIPS
         else:
             return None
 
-    
+    def findTwoPair(self):
+        """Return a number for the rank of the two pair.
+
+        Lower numbers mean a stronger hand.
+        Return None if no two pair hand is found.
+        """
+        if self.pair_count < 2:
+            return None
+        
+        first_pair = -1
+        second_pair = -1
+
+        first_pair = self.ranks.index(2)
+        self.ranks[first_pair] = 0
+        second_pair = self.ranks.index(2)
+        self.ranks[second_pair] = 0
+        self.pair_count -= 2
+
+        kicker = self.ranks.index(1)
+        if (kicker > second_pair + 1) and (self.pair_count > 2):
+            candidate = self.ranks.index(2)
+            if candidate < kicker:
+                kicker = candidate
+                self.pair_count -= 1
+        self.ranks[kicker] -= 1
+
+        print("[ " + str(first_pair) + ", " + str(second_pair) + ", " + str(kicker) + " ]")
+
+
+
+
+
     def findSequence(self, card_index, min_index):
         """Return the lowest and highest index in the sequence.
         
