@@ -27,25 +27,22 @@ class Ai_gen0(Bot):
         """
 
         for num in range(len(FUNCS)):
-            start_next = -1
-            if num < len(FUNCS) - 1:
-                start_next = FUNCS[num + 1][1]
-            else:
-                start_next = START_THREE
-            cat = self.findHandCategory(FUNCS[num][0], FUNCS[num][1], start_next)
+            cat = self.findHandCategory(FUNCS[num][0], FUNCS[num][1])
             if cat == START_THREE:
                 break
     
-    def findHandCategory(self, functionName, thisCategory, nextCategory):
+    def findHandCategory(self, functionName, nextCategory):
         """Return the rank of the next hand to search for.
 
         Call the function with functionName until it returns None or
         the first two slots of the board is taken.
         This should correspond to having found all remaining hands that are 
         higher ranking than nextCategory.
-        thisCategory is 
+        This assumes that all higher ranking hands than those being searched for
+        by the function is already found.
         """
         method = getattr(self, functionName)
+        thisCategory = nextCategory - 1
         while(thisCategory < nextCategory):
             hand = method()
             if hand is None:
@@ -57,7 +54,6 @@ class Ai_gen0(Bot):
                 thisCategory = START_THREE
         
         return thisCategory
-
 
 
 if __name__ == '__main__':

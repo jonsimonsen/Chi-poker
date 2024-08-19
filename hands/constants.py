@@ -66,10 +66,10 @@ START_TWO_PAIR = 1336
 # Starting point of three card hands
 START_THREE = 18000
 
-# Mapping between function name and hand strength
-FUNC_SFL = ["findStraightFlush", START_SFL]
-FUNC_QUADS = ["findQuads", START_QUADS]
-FUNC_FH = ["findFullHouse", START_FH]
-FUNC_FL = ["findFlush", START_FL]
-FUNC_STR = ["findStraight", START_STR]
+# Mapping between function name and hand strength of the next hand category
+FUNC_SFL = ["findStraightFlush", START_QUADS]
+FUNC_QUADS = ["findQuads", START_FH]
+FUNC_FH = ["findFullHouse", START_FL]
+FUNC_FL = ["findFlush", START_STR]
+FUNC_STR = ["findStraight", START_TRIPS]
 FUNCS = [FUNC_SFL, FUNC_QUADS, FUNC_FH, FUNC_FL, FUNC_STR]
