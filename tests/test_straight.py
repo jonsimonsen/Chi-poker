@@ -19,6 +19,7 @@ def main():
     # 4 4 3-3 2-3 -JT
     dumb_bot = Ai_gen0([FOUR_CARDS, FOUR_CARDS, THREE_CARDS_V3, TWO_CARDS_V2])
     dumb_bot.arrangeBoard()
+    print(dumb_bot.board)
 
 if __name__ == '__main__':
     main()

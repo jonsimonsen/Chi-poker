@@ -80,7 +80,15 @@ class Ai_gen0(Bot):
                 board_rank = START_THREE
 
         # Straight
-        straight = self.findStraight()
+        while board_rank < START_TRIPS:
+            straight = self.findStraight()
+            if straight is None:
+                board_rank = START_TRIPS
+            elif back == -1:
+                back = straight
+            else:
+                middle = straight
+                board_rank = START_THREE
 
         # Update board
         self.board = [back, middle, front]

@@ -192,22 +192,20 @@ class Bot(ABC):
                 if self.locked_pairs > 0:
                     for i in range(12, -1, -1):
                         if self.ranks[i] > 1:
-                            if i > indices[1]:
-                                break
-                            elif i < indices[0]:
+                            if (i > indices[1]) or (i < indices[0]) or (self.ranks[i] > 2):
                                 legal_straight = True
                                 break
                             else:
                                 legal_straight = False
                                 high_pair = i
                 if legal_straight:
-                    return indices[0]
+                    return indices[0] + START_STR
                 
             # Do a new search if the found straight was not legal
             if high_pair in range(0, 4):
                 indices = self.findSequence(4, high_pair + 1)
                 if indices[1] == indices[0] + 4:
-                    return indices[0]
+                    return indices[0] + START_STR
         
         # Search for straights containing a 5
         if self.ranks[9] > 0:
@@ -221,9 +219,9 @@ class Bot(ABC):
                 if (indices[1] == 13) and (high_pair == 0):
                     for i in range(8, 0, -1):
                         if self.ranks[i] > 1:
-                            return indices[0]
+                            return indices[0] + START_STR
                 else:
-                    return indices[0]
+                    return indices[0] + START_STR
 
         return None
     
