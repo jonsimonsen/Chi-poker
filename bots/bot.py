@@ -11,10 +11,10 @@ from hands.dealhand import *
 class Bot(ABC):
     """Class for a Chinese poker bot."""
     def __init__(self, hand):
-        self.hand = hand
+        self.suits = hand
         self.board = [-1, -1, -1]
         self.locked_pairs = 0
-        self.duplicates = []
+        self.ranks = []
 
     
     @abstractmethod
@@ -39,24 +39,24 @@ class Bot(ABC):
         Return None if no straight flush is found.
         """
         for suit in range(2):
-            if self.hand[suit] < (0b11 << 13):
+            if self.suits[suit] < (0b11 << 13):
                 return None
             else:
                 #Check for ordinary straight
                 bitmask = 0b11111
                 for i in reversed(range(9)):
-                    if (self.hand[suit] & (bitmask << i)) == (bitmask << i):
-                        self.hand[suit] = self.hand[suit] ^ (bitmask << i)
-                        fixLengthBits(self.hand, suit)
-                        self.hand.sort(reverse=True)
+                    if (self.suits[suit] & (bitmask << i)) == (bitmask << i):
+                        self.suits[suit] = self.suits[suit] ^ (bitmask << i)
+                        fixLengthBits(self.suits, suit)
+                        self.suits.sort(reverse=True)
                         return 8 - i
                 # Check for wheel
                 bitmask = 0b1111
-                if (self.hand[suit] & bitmask) == bitmask:
-                    if self.hand[suit] & (1 << 12):
-                        self.hand[suit] = self.hand[suit] ^ 0b1000000001111
-                        fixLengthBits(self.hand, suit)
-                        self.hand.sort(reverse=True)
+                if (self.suits[suit] & bitmask) == bitmask:
+                    if self.suits[suit] & (1 << 12):
+                        self.suits[suit] = self.suits[suit] ^ 0b1000000001111
+                        fixLengthBits(self.suits, suit)
+                        self.suits.sort(reverse=True)
                         return 9
 
         return None
@@ -67,12 +67,12 @@ class Bot(ABC):
         Lower numbers mean a stronger hand.
         Return None if no quad hand is found.
         """
-        if 4 in self.duplicates:
-            i = self.duplicates.index(4)
+        if 4 in self.ranks:
+            i = self.ranks.index(4)
             for suit in range(4):
-                removeCard(self.hand, suit, 12 - i)
-                fixLengthBits(self.hand, suit)
-                self.duplicates[i] = 0
+                removeCard(self.suits, suit, 12 - i)
+                fixLengthBits(self.suits, suit)
+                self.ranks[i] = 0
             return i + START_QUADS
         else:
             return None
@@ -84,17 +84,17 @@ class Bot(ABC):
         Return None if no full house is found.
         """
         target = 2
-        if 3 in self.duplicates: # Do we need to consider 4 as well? Should revisit this later
-            i = self.duplicates.index(3)
+        if 3 in self.ranks: # Do we need to consider 4 as well? Should revisit this later
+            i = self.ranks.index(3)
             if self.locked_pairs > 0:
                 target = 3
-            if self.duplicates.count(3) + self.duplicates.count(2) >= target:
+            if self.ranks.count(3) + self.ranks.count(2) >= target:
                 for suit in range(4):
-                    removeCard(self.hand, suit, 12 - i)
-                    fixLengthBits(self.hand, suit)
-                    self.duplicates[i] = 0
-                self.hand.sort(reverse=True)
-                printHand(self.hand)
+                    removeCard(self.suits, suit, 12 - i)
+                    fixLengthBits(self.suits, suit)
+                    self.ranks[i] = 0
+                self.suits.sort(reverse=True)
+                printHand(self.suits)
                 return i + START_FH
         return None
 
@@ -105,22 +105,22 @@ class Bot(ABC):
         Return None if no flush is found or a straight flush is found.
         """
 
-        if self.hand[0] < (0b11 << 13):
+        if self.suits[0] < (0b11 << 13):
             return None
         
         suit = 0
         # Check if the second suit has a higher flush than the first
-        if self.hand[1] > (0b11 << 13) and self.hand[0] > (0b1 < 15):
-            if (self.hand[1] % 8192) > (self.hand[0] % 8192):
+        if self.suits[1] > (0b11 << 13) and self.suits[0] > (0b1 < 15):
+            if (self.suits[1] % 8192) > (self.suits[0] % 8192):
                 suit = 1
 
         # Collect cards for the highest possible flush
         flush = []
         for i in reversed(range(13)):
-            if self.hand[suit] & 1 << i:
+            if self.suits[suit] & 1 << i:
                 flush.append(i)
         print(flush)
-        print(self.duplicates)
+        print(self.ranks)
         
         # Make sure that there is no straight flush
         if flush[0] - flush[4] == 4:
@@ -131,7 +131,7 @@ class Bot(ABC):
             lock = True
             low_pair = -1
             for i in range(13):
-                if (list(reversed(self.duplicates))[i] > 1):
+                if (list(reversed(self.ranks))[i] > 1):
                     print(i)
                     if (i) not in (flush[4::-1]):
                         lock = False
@@ -163,12 +163,12 @@ class Bot(ABC):
         print("Rank: " + str(rank))
 
         # Remove flush cards
-        if self.hand[suit] < (0b1 < 15):
-            self.hand[suit] = 0
+        if self.suits[suit] < (0b1 < 15):
+            self.suits[suit] = 0
         else:
             for value in flush[:5]:
-                removeCard(self.hand, suit, value)
-            fixLengthBits(self.hand, suit)
+                removeCard(self.suits, suit, value)
+            fixLengthBits(self.suits, suit)
         return rank
 
     def findStraight(self):
@@ -179,19 +179,19 @@ class Bot(ABC):
         """
 
         # Update duplicates
-        self.duplicates = findDuplicates(self.hand)
+        self.ranks = findDuplicates(self.suits)
 
-        indices = []
+        indices = [0, 3] # State if there are no Ts in the hand
         legal_straight = True
         high_pair = -1
 
         # Search for straights containing a T
-        if self.duplicates[4] > 0:
+        if self.ranks[4] > 0:
             indices = self.findSequence(4, 0)
             if indices[1] == indices[0] + 4:
                 if self.locked_pairs > 0:
                     for i in range(12, -1, -1):
-                        if self.duplicates[i] > 1:
+                        if self.ranks[i] > 1:
                             if i > indices[1]:
                                 break
                             elif i < indices[0]:
@@ -210,7 +210,7 @@ class Bot(ABC):
                     return indices[0]
         
         # Search for straights containing a 5
-        if self.duplicates[9] > 0:
+        if self.ranks[9] > 0:
             min_index = 0
             if high_pair > 4:
                 min_index = high_pair + 1
@@ -220,7 +220,7 @@ class Bot(ABC):
             if indices[1] == indices[0] + 4:
                 if (indices[1] == 13) and (high_pair == 0):
                     for i in range(8, 0, -1):
-                        if self.duplicates[i] > 1:
+                        if self.ranks[i] > 1:
                             return indices[0]
                 else:
                     return indices[0]
@@ -237,15 +237,15 @@ class Bot(ABC):
         low_index = min_index
         high_index = 0
         for i in range(card_index - 1, min_index - 1, -1):
-            if self.duplicates[i] == 0:
+            if self.ranks[i] == 0:
                 low_index = i + 1
                 break
         for j in range(card_index + 1, low_index + 5):
             # Check Ace as a one (for a wheel)
             if j == 14:
-                if self.duplicates[0] == 0:
+                if self.ranks[0] == 0:
                     high_index = j - 1
-            elif self.duplicates[j] == 0:
+            elif self.ranks[j] == 0:
                 high_index = j - 1
                 break
         if high_index == 0:

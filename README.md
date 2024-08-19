@@ -55,3 +55,18 @@ The plan is for the AI to optimalize their hands against a table of static hand 
 
 ## Versions
 There will be no official version until a working dumb AI has been created.  
+
+## AI Theory
+
+#### Hand representation
+Because the AI needs to be able to determine if the hand contains flushes, the hand will initially be represented with each suit recording what ranks are present in the suit (suit representation).  
+
+When trying to find duplicated ranks (f.ex. quads), it would be quite an advantage if the hand is represented in a way that counts the number of cards for each rank (rank representation). It also turns out that this representation is easier to use for finding straights than the suit representation.  
+
+We should be able to build a bot that finds an optimal solution by first populating the back hand (trying to make it as strong as possible). This means that if the algorithm has found a hand of a specific strength, it should never need to consider the possibility that it contains a stronger hand.    
+
+With this principle in mind, we can conclude that the suit representation is no longer relevant when we're ready to search for straights. Anything from straights and down can therefore focus entirely on the rank representation of hands.  
+
+If we later create an AI that tries to populate the front hand first, we might need to revise this principle.  
+
+In the previous discussion, we've ignored the fact that constructing the best possible board is an iterative process. The way to deal with that should be to store the state of the hand before committing something to the board so we can go back to that state later to search for even better configurations. If we go back to a state where the suit representation is still relevant, it should work out fine since at that stage we've not started ignoring it yet.  

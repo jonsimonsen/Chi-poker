@@ -42,7 +42,7 @@ class Ai_gen0(Bot):
                 board_rank = START_THREE
 
         # Find duplicates for Quads/Full house
-        self.duplicates = findDuplicates(self.hand)
+        self.ranks = findDuplicates(self.suits)
         
         # Quads
         while board_rank < START_FH:
@@ -89,14 +89,14 @@ if __name__ == '__main__':
     hand = processHand(dealHand())
     dumb_bot = Ai_gen0(hand)
     print("Start hand: ")
-    printHand(dumb_bot.hand)
+    printHand(dumb_bot.suits)
     dumb_bot.arrangeBoard()
     print("Summary: " + str(dumb_bot.board))
-    printHand(dumb_bot.hand)
+    printHand(dumb_bot.suits)
 
     dumb_bot.resetHand([0b1001100001101010, 0b11000000000001, 0b10100100000000, 0b10100010001000])
     print("Start hand: ")
-    printHand(dumb_bot.hand)
+    printHand(dumb_bot.suits)
     dumb_bot.arrangeBoard()
     print("Summary: " + str(dumb_bot.board))
-    printHand(dumb_bot.hand)
+    printHand(dumb_bot.suits)
