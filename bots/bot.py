@@ -67,6 +67,7 @@ class Bot(ABC):
         Lower numbers mean a stronger hand.
         Return None if no quad hand is found.
         """
+        self.ranks = findDuplicates(self.suits)
         if 4 in self.ranks:
             i = self.ranks.index(4)
             for suit in range(4):

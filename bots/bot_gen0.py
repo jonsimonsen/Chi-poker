@@ -25,71 +25,40 @@ class Ai_gen0(Bot):
         Put the strongest hand in the back.
         Then put the strongest remaining hand in the middle. 
         """
-        back = -1
-        middle = -1
-        front = -1
-        board_rank = -1
 
-        # Straight flush
-        while board_rank < START_QUADS:
-            sfl = self.findStraightFlush()
-            if sfl is None:
-                board_rank = START_QUADS
-            elif back == -1:
-                back = sfl
+        for num in range(len(FUNCS)):
+            start_next = -1
+            if num < len(FUNCS) - 1:
+                start_next = FUNCS[num + 1][1]
             else:
-                middle = sfl
-                board_rank = START_THREE
+                start_next = START_THREE
+            cat = self.findHandCategory(FUNCS[num][0], FUNCS[num][1], start_next)
+            if cat == START_THREE:
+                break
+    
+    def findHandCategory(self, functionName, thisCategory, nextCategory):
+        """Return the rank of the next hand to search for.
 
-        # Find duplicates for Quads/Full house
-        self.ranks = findDuplicates(self.suits)
+        Call the function with functionName until it returns None or
+        the first two slots of the board is taken.
+        This should correspond to having found all remaining hands that are 
+        higher ranking than nextCategory.
+        thisCategory is 
+        """
+        method = getattr(self, functionName)
+        while(thisCategory < nextCategory):
+            hand = method()
+            if hand is None:
+                thisCategory = nextCategory
+            elif self.board[0] == -1:
+                self.board[0] = hand
+            else:
+                self.board[1] = hand
+                thisCategory = START_THREE
         
-        # Quads
-        while board_rank < START_FH:
-            quad = self.findQuads()
-            if quad is None:
-                board_rank = START_FH
-            elif back == -1:
-                back = quad
-            else:
-                middle = quad
-                board_rank = START_THREE
+        return thisCategory
 
-        # Full house
-        while board_rank < START_FL:
-            fh = self.findFullHouse()
-            if fh is None:
-                board_rank = START_FL
-            elif back == -1:
-                back = fh
-            else:
-                middle = fh
-                board_rank = START_THREE
 
-        # Flush
-        while board_rank < START_STR:
-            flush = self.findFlush()
-            if flush is None:
-                board_rank = START_STR
-            elif back == -1:
-                back = flush
-            else:
-                middle = flush
-                board_rank = START_THREE
-
-        # Straight
-        while board_rank < START_TRIPS:
-            straight = self.findStraight()
-            if straight is None:
-                board_rank = START_TRIPS
-            elif back == -1:
-                back = straight
-            else:
-                middle = straight
-                board_rank = START_THREE
-
-        # Update board
-        self.board = [back, middle, front]
 
 if __name__ == '__main__':
     hand = processHand(dealHand())
