@@ -14,6 +14,7 @@ class Bot(ABC):
         self.suits = hand
         self.board = [-1, -1, -1]
         self.locked_pairs = 0
+        self.high_card = False
         self.ranks = []
 
     
@@ -93,7 +94,7 @@ class Bot(ABC):
                 for suit in range(4):
                     removeCard(self.suits, suit, 12 - i)
                     fixLengthBits(self.suits, suit)
-                    self.ranks[i] = 0
+                self.ranks[i] = 0
                 self.suits.sort(reverse=True)
                 self.locked_pairs += 1
                 printHand(self.suits)
@@ -248,6 +249,27 @@ class Bot(ABC):
             return indices[0] + START_STR
         else:
             return None
+        
+    def findTrips(self):
+        """Return a number for the rank of the trips.
+
+        Lower numbers mean a stronger hand.
+        Return None if no trip hand is found.
+        """
+
+        # Check if trips(or pairs) is possible
+        pair_count = self.ranks.count(3) + self.ranks.count(2)
+        if pair_count == 0 or (self.locked_pairs == 1 and pair_count < 2):
+            self.high_card = True
+            return None
+
+        if 3 in self.ranks:
+            i = self.ranks.index(3)
+            self.ranks[i] = 0
+            return i + START_TRIPS
+        else:
+            return None
+
     
     def findSequence(self, card_index, min_index):
         """Return the lowest and highest index in the sequence.
