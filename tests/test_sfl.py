@@ -23,7 +23,7 @@ def main():
         dumb_bot.arrangeBoard()
         print(STRING_10[i])
         print(dumb_bot.board)
-        print(dumb_bot.hand)
+        print(dumb_bot.suits)
 
 if __name__ == '__main__':
     main()
