@@ -94,6 +94,7 @@ class Bot(ABC):
                     fixLengthBits(self.suits, suit)
                     self.ranks[i] = 0
                 self.suits.sort(reverse=True)
+                self.locked_pairs += 1
                 printHand(self.suits)
                 return i + START_FH
         return None
@@ -230,7 +231,7 @@ class Bot(ABC):
                                 high_pair = i
                 else:
                     straight_found = True
-                    
+
             # Do a new search if the found straight was not legal
             if (high_pair in range(5, 9)) and (not straight_found):
                 indices = self.findSequence(9, high_pair + 1)

@@ -62,10 +62,8 @@ class Ai_gen0(Bot):
                 board_rank = START_FL
             elif back == -1:
                 back = fh
-                self.locked_pairs = 1
             else:
                 middle = fh
-                self.locked_pairs += 1
                 board_rank = START_THREE
 
         # Flush
