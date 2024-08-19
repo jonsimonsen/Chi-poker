@@ -182,7 +182,7 @@ class Bot(ABC):
         self.ranks = findDuplicates(self.suits)
 
         indices = [0, 3] # State if there are no Ts in the hand
-        legal_straight = True
+        straight_found = False
         high_pair = -1
 
         # Search for straights containing a T
@@ -193,24 +193,23 @@ class Bot(ABC):
                     for i in range(12, -1, -1):
                         if self.ranks[i] > 1:
                             if (i > indices[1]) or (i < indices[0]) or (self.ranks[i] > 2):
-                                legal_straight = True
+                                straight_found = True
                                 break
                             else:
-                                legal_straight = False
                                 high_pair = i
-                if legal_straight:
-                    return indices[0] + START_STR
-                
+                else:
+                    straight_found = True
+
             # Do a new search if the found straight was not legal
-            if high_pair in range(0, 4):
+            if (high_pair in range(0, 4)) and (not straight_found):
                 indices = self.findSequence(4, high_pair + 1)
                 if indices[1] == indices[0] + 4:
-                    return indices[0] + START_STR
+                    straight_found = True
         
         # Search for straights containing a 5
-        if self.ranks[9] > 0:
+        if (self.ranks[9] > 0) and (not straight_found):
             min_index = 0
-            if high_pair > 4:
+            if high_pair > 3:
                 min_index = high_pair + 1
             else:
                 min_index = indices[1] + 2
@@ -219,11 +218,34 @@ class Bot(ABC):
                 if (indices[1] == 13) and (high_pair == 0):
                     for i in range(8, 0, -1):
                         if self.ranks[i] > 1:
-                            return indices[0] + START_STR
+                            straight_found = True
+                elif (self.locked_pairs > 0 and high_pair == -1):
+                    for i in range(12):
+                        if self.ranks[i] > 1:
+                            if (i < indices[0]) or (i > indices[1]) or (self.ranks[i] > 2):
+                                if not (i == 0 and indices[1] == 13 and self.ranks[i] < 3):
+                                    straight_found = True
+                                    break
+                            else:
+                                high_pair = i
                 else:
-                    return indices[0] + START_STR
+                    straight_found = True
+                    
+            # Do a new search if the found straight was not legal
+            if (high_pair in range(5, 9)) and (not straight_found):
+                indices = self.findSequence(9, high_pair + 1)
+                if indices[1] == indices[0] + 4:
+                    straight_found = True
 
-        return None
+        if straight_found:
+            for rank in range (indices[0], indices[1] + 1):
+                if rank == 13:
+                    self.ranks[0] -= 1
+                else:
+                    self.ranks[rank] -= 1
+            return indices[0] + START_STR
+        else:
+            return None
     
     def findSequence(self, card_index, min_index):
         """Return the lowest and highest index in the sequence.
@@ -240,7 +262,7 @@ class Bot(ABC):
                 break
         for j in range(card_index + 1, low_index + 5):
             # Check Ace as a one (for a wheel)
-            if j == 14:
+            if j == 13:
                 if self.ranks[0] == 0:
                     high_index = j - 1
             elif self.ranks[j] == 0:
