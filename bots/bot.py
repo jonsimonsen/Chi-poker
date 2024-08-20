@@ -293,7 +293,7 @@ class Bot(ABC):
         self.pair_count -= 2
 
         kicker = self.ranks.index(1)
-        if (kicker > second_pair + 1) and (self.pair_count > 2):
+        if (kicker > second_pair + 1) and (self.pair_count > 0):
             candidate = self.ranks.index(2)
             if candidate < kicker:
                 kicker = candidate
