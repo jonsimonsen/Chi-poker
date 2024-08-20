@@ -57,17 +57,23 @@ class Ai_gen0(Bot):
 
 
 if __name__ == '__main__':
-    hand = processHand(dealHand())
-    dumb_bot = Ai_gen0(hand)
-    print("Start hand: ")
-    printHand(dumb_bot.suits)
-    dumb_bot.arrangeBoard()
-    print("Summary: " + str(dumb_bot.board))
-    printHand(dumb_bot.suits)
+    dumb_bot = Ai_gen0([0, 0, 0, 0])
+    hand = None
+    # Arrange 10 random hands
+    for i in range(10):
+        hand = processHand(dealHand())
+        dumb_bot.resetHand(hand)
+        print("Hand " + str(i) + ":\n")
+        printHand(dumb_bot.suits)
+        dumb_bot.arrangeBoard()
+        print("Summary: " + str(dumb_bot.board))
+        printHand(dumb_bot.suits)
+        print("")
 
-    dumb_bot.resetHand([0b1001100001101010, 0b11000000000001, 0b10100100000000, 0b10100010001000])
+    # Test specific hands
+    """dumb_bot.resetHand([0b1001100001101010, 0b11000000000001, 0b10100100000000, 0b10100010001000])
     print("Start hand: ")
     printHand(dumb_bot.suits)
     dumb_bot.arrangeBoard()
     print("Summary: " + str(dumb_bot.board))
-    printHand(dumb_bot.suits)
+    printHand(dumb_bot.suits)"""

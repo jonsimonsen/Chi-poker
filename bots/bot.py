@@ -284,6 +284,7 @@ class Bot(ABC):
         
         first_pair = -1
         second_pair = -1
+        rank = 0
 
         first_pair = self.ranks.index(2)
         self.ranks[first_pair] = 0
@@ -301,8 +302,19 @@ class Bot(ABC):
 
         print("[ " + str(first_pair) + ", " + str(second_pair) + ", " + str(kicker) + " ]")
 
+        # Calculate hand rank
+        for i in range(first_pair):
+            rank += 12 - i
+        rank += second_pair - first_pair - 1
 
+        #Justify for kickers
+        rank = rank * 11 + kicker
+        if kicker > second_pair:
+            rank -= 2
+        elif kicker > first_pair:
+            rank -= 1
 
+        return START_TWO_PAIR + rank
 
 
     def findSequence(self, card_index, min_index):
