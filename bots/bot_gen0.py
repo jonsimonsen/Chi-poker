@@ -80,12 +80,12 @@ if __name__ == '__main__':
     dumb_bot.arrangeBoard()
     print("Summary: " + str(dumb_bot.board))"""
 
-    print("Straight issue")
+    """print("Straight issue")
     dumb_bot.resetHand([0b100101000100010, 0b11000100000001, 0b10100001010000, 0b10010100010000])
     print("Start hand: ")
     printHand(dumb_bot.suits)
     dumb_bot.arrangeBoard()
-    print("Summary: " + str(dumb_bot.board))
+    print("Summary: " + str(dumb_bot.board))"""
 
     """print("Two pair issue")
     dumb_bot.resetHand([0b100011000000011, 0b100001010100100, 0b10010100100000, 0b10000100010000])

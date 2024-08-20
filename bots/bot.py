@@ -317,6 +317,25 @@ class Bot(ABC):
             rank -= 1
 
         return START_TWO_PAIR + rank
+    
+    def findPair(self):
+        """Return a number for the rank of the pair.
+
+        Lower numbers mean a stronger hand.
+        Return None if no pair hand is found.
+        """
+        if self.pair_count < 1:
+            return None
+        
+        pair = self.ranks.index(2)
+        self.ranks[pair] = 0
+        kickers = []
+
+        while len(kickers) < 3:
+            kickers.append(self.ranks.index(1))
+            self.ranks[kickers[-1]] = 0
+
+        print(str(pair) + "s with kickers " + str(kickers))
 
 
     def findSequence(self, card_index, min_index):
