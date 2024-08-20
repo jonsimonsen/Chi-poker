@@ -330,13 +330,30 @@ class Bot(ABC):
         pair = self.ranks.index(2)
         self.ranks[pair] = 0
         kickers = []
+        rank = 0
 
         while len(kickers) < 3:
-            kickers.append(self.ranks.index(1))
-            self.ranks[kickers[-1]] = 0
+            index = self.ranks.index(1)
+            self.ranks[index] = 0
+            if index > pair:
+                index -= 1
+            kickers.append(index)
 
         print(str(pair) + "s with kickers " + str(kickers))
+        rank += pair * PAIR_KICKERS
+        if kickers[0] > 0:
+            rank += 55
+            for i in range(1, kickers[0]):
+                if i >= 9:
+                    print("Error. Unexpected kicker index.")
+                    break
+                else:
+                    rank += F2[i - 1]
+        for j in range(kickers[0] + 1, kickers[1]):
+            rank += 11 - j
+        rank += kickers[2] - kickers[1] - 1
 
+        return START_PAIR + rank
 
     def findSequence(self, card_index, min_index):
         """Return the lowest and highest index in the sequence.

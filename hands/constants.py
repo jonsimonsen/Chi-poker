@@ -23,6 +23,9 @@ MAX_CARDBITS = 8191
 
 # Hand ranking constants
 
+# Generic
+PAIR_KICKERS = 220
+
 # 2-flushes
 F2_11 = 45
 F2_10 = 36
@@ -63,7 +66,7 @@ START_STR = 1313
 START_TRIPS = 1323
 START_TWO_PAIR = 1336
 START_PAIR = 2194
-START_HI = 3471
+START_HI = 5054
 
 # Starting point of three card hands
 START_THREE = 18000
