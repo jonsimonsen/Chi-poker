@@ -67,9 +67,10 @@ START_TRIPS = 1323
 START_TWO_PAIR = 1336
 START_PAIR = 2194
 START_HI = 5054
+END_HI = 6331
 
 # Starting point of three card hands
-START_THREE = 18000
+START_THREE = 10000
 
 # Mapping between function name and hand strength of the next hand category
 FUNC_SFL = ["findStraightFlush", START_QUADS]
