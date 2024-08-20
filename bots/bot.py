@@ -181,7 +181,9 @@ class Bot(ABC):
         """
 
         # Update duplicates
-        self.ranks = findDuplicates(self.suits)
+        if self.suits is not None:
+            self.ranks = findDuplicates(self.suits)
+            self.suits = None # Suits are no longer needed
 
         indices = [0, 3] # State if there are no Ts in the hand
         straight_found = False

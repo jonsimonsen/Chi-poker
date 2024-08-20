@@ -67,32 +67,31 @@ if __name__ == '__main__':
         printHand(dumb_bot.suits)
         dumb_bot.arrangeBoard()
         print("Summary: " + str(dumb_bot.board))
-        printHand(dumb_bot.suits)
         print("")
 
     # Test specific hands
     print("Test specific hands:\n")
-    """dumb_bot.resetHand([0b1001100001101010, 0b11000000000001, 0b10100100000000, 0b10100010001000])
+
+
+    """print("Old issue - Should probably be removed")
+    dumb_bot.resetHand([0b1001100001101010, 0b11000000000001, 0b10100100000000, 0b10100010001000])
     print("Start hand: ")
     printHand(dumb_bot.suits)
     dumb_bot.arrangeBoard()
-    print("Summary: " + str(dumb_bot.board))
-    printHand(dumb_bot.suits)"""
+    print("Summary: " + str(dumb_bot.board))"""
 
-    """print("Straight issue")
+    print("Straight issue")
     dumb_bot.resetHand([0b100101000100010, 0b11000100000001, 0b10100001010000, 0b10010100010000])
     print("Start hand: ")
     printHand(dumb_bot.suits)
     dumb_bot.arrangeBoard()
     print("Summary: " + str(dumb_bot.board))
-    printHand(dumb_bot.suits)"""
-    
-    print("Two pair issue")
+
+    """print("Two pair issue")
     dumb_bot.resetHand([0b100011000000011, 0b100001010100100, 0b10010100100000, 0b10000100010000])
     print("Start hand: ")
     printHand(dumb_bot.suits)
     dumb_bot.arrangeBoard()
-    print("Summary: " + str(dumb_bot.board))
-    printHand(dumb_bot.suits)
+    print("Summary: " + str(dumb_bot.board))"""
 
 
