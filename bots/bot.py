@@ -359,7 +359,7 @@ class Bot(ABC):
         for i in range(5):
             card = self.ranks.index(1)
             hi_cards.append(card)
-            self.ranks[i] = 0
+            self.ranks[card] = 0
 
         rank = rankHiCard(hi_cards)
         return START_HI + rank
