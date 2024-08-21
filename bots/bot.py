@@ -367,6 +367,11 @@ class Bot(ABC):
         
         Return None if there are no trips or trips are illegal
         """
+        # Update duplicates
+        if self.suits is not None:
+            self.ranks = findDuplicates(self.suits)
+            self.suits = None # Suits are no longer needed
+            
         self.pair_count = getPairCount(self.ranks) - self.locked_pairs
         if self.board[1] >= START_TWO_PAIR or self.pair_count == 0:
             return None

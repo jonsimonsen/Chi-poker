@@ -100,12 +100,12 @@ if __name__ == '__main__':
     dumb_bot.arrangeBoard()
     print("Summary: " + str(dumb_bot.board))"""
 
-    print("Hi card issue")
+    """print("Hi card issue")
     dumb_bot.resetHand([0b100011000011000, 0b100010000100110, 0b100000100010000, 0b100000010010001])
     print("Start hand: ")
     printHand(dumb_bot.suits)
     dumb_bot.arrangeBoard()
-    print("Summary: " + str(dumb_bot.board))
+    print("Summary: " + str(dumb_bot.board))"""
 
     """print("Test nut low flush")
     dumb_bot.resetHand([0b110000000101111, 0b11100100000000, 0b11100100000000, 0b10001010000000])
@@ -113,3 +113,10 @@ if __name__ == '__main__':
     printHand(dumb_bot.suits)
     dumb_bot.arrangeBoard()
     print("Summary: " + str(dumb_bot.board))"""
+
+    print("Rank issue (locked pair used)")
+    dumb_bot.resetHand([0b110001110011001, 0b10101000000000, 0b10100010000010, 0b10010010000000])
+    print("Start hand: ")
+    printHand(dumb_bot.suits)
+    dumb_bot.arrangeBoard()
+    print("Summary: " + str(dumb_bot.board))
