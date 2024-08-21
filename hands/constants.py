@@ -49,19 +49,19 @@ F3_5 = 4
 F3_4 = 1 # Ignoring this when counting since straight flushes are its own category
 F3 = [F3_12, F3_11, F3_10, F3_9, F3_8, F3_7, F3_6, F3_5]
 
-# Starting point of various hands in the rankings 494 329 823
+# Starting point of various hands in the rankings
 START_SFL = 0
 START_QUADS = 10
 START_FH = 23
 START_FL = 36
-START_F_K = START_FL + sum(F3) - 1 # 1 less since there are two straight flushes containing an ace
+START_F_K = sum(F3) - 1 # 1 less since there are two straight flushes containing an ace
 START_F_Q = START_F_K + sum(F3[1:])
 START_F_J = START_F_Q + sum(F3[2:])
 START_F_T = START_F_J + sum(F3[3:])
 START_F_9 = START_F_T + sum(F3[4:])
 START_F_8 = START_F_9 + sum(F3[5:])
 START_F_7 = START_F_8 + sum(F3[6:])
-START_FLUSHES = [START_FL, START_F_K, START_F_Q, START_F_J, START_F_T, START_F_9, START_F_8, START_F_7]
+START_FLUSHES = [0, START_F_K, START_F_Q, START_F_J, START_F_T, START_F_9, START_F_8, START_F_7]
 START_STR = 1313
 START_TRIPS = 1323
 START_TWO_PAIR = 1336

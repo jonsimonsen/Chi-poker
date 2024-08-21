@@ -150,19 +150,7 @@ class Bot(ABC):
                     return None
 
         # Find rank
-        rank = START_FLUSHES[(flush[0])] - 1
-        print("Rank: " + str(rank))
-        for i in range(flush[0], flush[1] - 1):
-            rank += F3[(i)]
-        print("Rank: " + str(rank))
-        for i in range(flush[1] - 1, flush[2] - 2):
-            rank += F2[(i)]
-        print("Rank: " + str(rank))
-        for i in range(flush[2] + 1, flush[3]):
-            rank += 12 - i
-        print("Rank: " + str(rank))
-        rank += flush[4] - (flush[3] + 1)
-        print("Rank: " + str(rank))
+        rank = rankHiCard(flush)
 
         # Remove flush cards
         if self.suits[suit] < (0b1 < 15):
@@ -171,7 +159,7 @@ class Bot(ABC):
             for value in flush[:5]:
                 removeCard(self.suits, suit, 12 - value)
             fixLengthBits(self.suits, suit)
-        return rank
+        return START_FL + rank
 
     def findStraight(self):
         """Return a number for the rank of the straight.
@@ -365,13 +353,16 @@ class Bot(ABC):
             if 3 in self.ranks:
                 self.ranks[self.ranks.index(3)] = 1
             if 2 in self.ranks:
-                self.ranks[self.ranks.index[2]] = 0
+                self.ranks[self.ranks.index(2)] = 0
 
         hi_cards = []
         for i in range(5):
             card = self.ranks.index(1)
             hi_cards.append(card)
             self.ranks[i] = 0
+
+        rank = rankHiCard(hi_cards)
+        return START_HI + rank
 
     def findSequence(self, card_index, min_index):
         """Return the lowest and highest index in the sequence.
