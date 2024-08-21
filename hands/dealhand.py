@@ -136,3 +136,10 @@ def removeCard(hand, suit, value):
 
     # https://stackoverflow.com/questions/12173774/how-to-modify-bits-in-an-integer/12174125#12174125
     hand[suit] &= ~ (1 << value)
+
+def rankHiCard(hand):
+    """Return the rank of a high card hand.
+    
+    0 for the best (AKQJ9) down to
+    1276 for the worst (75432)
+    """

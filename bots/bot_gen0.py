@@ -94,4 +94,9 @@ if __name__ == '__main__':
     dumb_bot.arrangeBoard()
     print("Summary: " + str(dumb_bot.board))"""
 
-
+    print("Test nut low flush")
+    dumb_bot.resetHand([0b110000000101111, 0b11100100000000, 0b11100100000000, 0b10001010000000])
+    print("Start hand: ")
+    printHand(dumb_bot.suits)
+    dumb_bot.arrangeBoard()
+    print("Summary: " + str(dumb_bot.board))

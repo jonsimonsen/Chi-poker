@@ -49,7 +49,7 @@ F3_5 = 4
 F3_4 = 1 # Ignoring this when counting since straight flushes are its own category
 F3 = [F3_12, F3_11, F3_10, F3_9, F3_8, F3_7, F3_6, F3_5]
 
-# Starting point of various hands in the rankings
+# Starting point of various hands in the rankings 494 329 823
 START_SFL = 0
 START_QUADS = 10
 START_FH = 23
@@ -81,4 +81,5 @@ FUNC_STR = ["findStraight", START_TRIPS]
 FUNC_TRIPS = ["findTrips", START_TWO_PAIR]
 FUNC_TWO_PAIR = ["findTwoPair", START_PAIR]
 FUNC_PAIR = ["findPair", START_HI]
-FUNCS = [FUNC_SFL, FUNC_QUADS, FUNC_FH, FUNC_FL, FUNC_STR, FUNC_TRIPS, FUNC_TWO_PAIR, FUNC_PAIR]
+FUNC_HI = ["findHiCard", START_THREE]
+FUNCS = [FUNC_SFL, FUNC_QUADS, FUNC_FH, FUNC_FL, FUNC_STR, FUNC_TRIPS, FUNC_TWO_PAIR, FUNC_PAIR, FUNC_HI]

@@ -120,20 +120,20 @@ class Bot(ABC):
         flush = []
         for i in reversed(range(13)):
             if self.suits[suit] & 1 << i:
-                flush.append(i)
+                flush.append(12 - i)
         print(flush)
         print(self.ranks)
         
         # Make sure that there is no straight flush
-        if flush[0] - flush[4] == 4:
+        if flush[4] - flush[0] == 4:
             return None
         
         # Make sure that the flush does not contain a locked pair
         if self.locked_pairs > 0:
             lock = True
             low_pair = -1
-            for i in range(13):
-                if (list(reversed(self.ranks))[i] > 1):
+            for i in reversed(range(13)):
+                if self.ranks[i] > 1:
                     print(i)
                     if (i) not in (flush[4::-1]):
                         lock = False
@@ -150,18 +150,18 @@ class Bot(ABC):
                     return None
 
         # Find rank
-        rank = START_FLUSHES[(12 - flush[0])] - 1
+        rank = START_FLUSHES[(flush[0])] - 1
         print("Rank: " + str(rank))
-        for i in range(flush[0] - 1, flush[1], -1):
-            rank += F3[(11 - i)]
+        for i in range(flush[0], flush[1] - 1):
+            rank += F3[(i)]
         print("Rank: " + str(rank))
-        for i in range(flush[1] - 1, flush[2], -1):
-            rank += F2[(10 - i)]
+        for i in range(flush[1] - 1, flush[2] - 2):
+            rank += F2[(i)]
         print("Rank: " + str(rank))
-        for i in range(flush[2] - 1, flush[3], -1):
-            rank += i
+        for i in range(flush[2] + 1, flush[3]):
+            rank += 12 - i
         print("Rank: " + str(rank))
-        rank += flush[3] - (flush[4] + 1)
+        rank += flush[4] - (flush[3] + 1)
         print("Rank: " + str(rank))
 
         # Remove flush cards
@@ -169,7 +169,7 @@ class Bot(ABC):
             self.suits[suit] = 0
         else:
             for value in flush[:5]:
-                removeCard(self.suits, suit, value)
+                removeCard(self.suits, suit, 12 - value)
             fixLengthBits(self.suits, suit)
         return rank
 
@@ -354,6 +354,24 @@ class Bot(ABC):
         rank += kickers[2] - kickers[1] - 1
 
         return START_PAIR + rank
+    
+    def findHiCard(self):
+        """Return a number for the rank of the high card hand.
+        
+        Lower numbers mean a stronger hand.
+        """
+        
+        if self.locked_pairs > 0: # Locked pairs are now irrelevant
+            if 3 in self.ranks:
+                self.ranks[self.ranks.index(3)] = 1
+            if 2 in self.ranks:
+                self.ranks[self.ranks.index[2]] = 0
+
+        hi_cards = []
+        for i in range(5):
+            card = self.ranks.index(1)
+            hi_cards.append(card)
+            self.ranks[i] = 0
 
     def findSequence(self, card_index, min_index):
         """Return the lowest and highest index in the sequence.
