@@ -70,7 +70,10 @@ START_HI = 5054
 END_HI = 6331
 
 # Starting point of three card hands
-START_THREE = 10000
+START_3 = 6400
+START_3_PAIR = 6413
+START_3_HI = 6569
+END_3_HI = 9999
 
 # Mapping between function name and hand strength of the next hand category
 FUNC_SFL = ["findStraightFlush", START_QUADS]
@@ -81,5 +84,9 @@ FUNC_STR = ["findStraight", START_TRIPS]
 FUNC_TRIPS = ["findTrips", START_TWO_PAIR]
 FUNC_TWO_PAIR = ["findTwoPair", START_PAIR]
 FUNC_PAIR = ["findPair", START_HI]
-FUNC_HI = ["findHiCard", START_THREE]
-FUNCS = [FUNC_SFL, FUNC_QUADS, FUNC_FH, FUNC_FL, FUNC_STR, FUNC_TRIPS, FUNC_TWO_PAIR, FUNC_PAIR, FUNC_HI]
+FUNC_HI = ["findHiCard", START_3]
+FUNC_3TRIPS = ["findThreeCardTrips", START_3_PAIR]
+FUNC_3PAIR = ["findThreeCardPair", START_3_HI]
+FUNC_3HI = ["findThreeCardHi", END_3_HI]
+FUNCS_5 = [FUNC_SFL, FUNC_QUADS, FUNC_FH, FUNC_FL, FUNC_STR, FUNC_TRIPS, FUNC_TWO_PAIR, FUNC_PAIR, FUNC_HI]
+FUNCS_3 = [FUNC_3TRIPS, FUNC_3PAIR, FUNC_3HI]

@@ -26,9 +26,13 @@ class Ai_gen0(Bot):
         Then put the strongest remaining hand in the middle. 
         """
 
-        for num in range(len(FUNCS)):
-            cat = self.findHandCategory(FUNCS[num][0], FUNCS[num][1])
-            if cat == START_THREE:
+        for i in range(len(FUNCS_5)):
+            category = self.findHandCategory(FUNCS_5[i][0], FUNCS_5[i][1])
+            if category == START_3:
+                break
+        for j in range (len(FUNCS_3)):
+            category = self.findHandCategory(FUNCS_3[j][0], FUNCS_3[j][1])
+            if self.board[2] >= 0:
                 break
     
     def findHandCategory(self, functionName, nextCategory):
@@ -47,11 +51,13 @@ class Ai_gen0(Bot):
             hand = method()
             if hand is None:
                 thisCategory = nextCategory
+            elif functionName.startswith("findThree"):
+                self.board[2] = hand
             elif self.board[0] == -1:
                 self.board[0] = hand
             else:
                 self.board[1] = hand
-                thisCategory = START_THREE
+                thisCategory = START_3
         
         return thisCategory
 

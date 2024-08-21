@@ -159,3 +159,13 @@ def rankHiCard(hand):
     print("Rank: " + str(rank))
 
     return rank
+
+def getPairCount(hand):
+    """Return the number of occurrences of pairs in a hand.
+    
+    The hand should contain counts of each card rank.
+    Trips are counted as a pair, quads as two pairs
+    """
+    pair_count = hand.count(3) + hand.count(2) + (2 * hand.count(4))
+    return pair_count
+        

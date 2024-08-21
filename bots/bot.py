@@ -246,14 +246,10 @@ class Bot(ABC):
         Return None if no trip hand is found.
         """
 
-        # Check if trips(or pairs) is possible
-        pair_count = self.ranks.count(3) + self.ranks.count(2)
-        if pair_count == 0 or (self.locked_pairs == 1 and pair_count < 2):
-            self.pair_count = 0
+        self.pair_count = getPairCount(self.ranks) - self.locked_pairs
+
+        if self.pair_count == 0:
             return None
-        self.pair_count = pair_count
-        if self.locked_pairs:
-            self.pair_count -= 1
 
         if 3 in self.ranks:
             i = self.ranks.index(3)
@@ -363,6 +359,56 @@ class Bot(ABC):
 
         rank = rankHiCard(hi_cards)
         return START_HI + rank
+    
+    def findThreeCardTrips(self):
+        """Return the rank of the trips.
+        
+        Return None if there are no trips or trips are illegal
+        """
+        self.pair_count = getPairCount(self.ranks) - self.locked_pairs
+        if self.board[1] >= START_TWO_PAIR or self.pair_count == 0:
+            return None
+        
+        if 3 in self.ranks:
+            return START_3 + self.ranks.index(3)
+        else:
+            return None
+        
+    def findThreeCardPair(self):
+        """Return the rank of the pair.
+        
+        Return None if there is no pair or a pair is illegal"""
+        if self.pair_count == 0:
+            return None
+        
+        pair = self.ranks.index(2)
+        self.ranks[pair] = 0
+        self.pair_count -= 1
+        kicker = 99
+
+        if 1 in self.ranks:
+            kicker = self.ranks.index(1)
+
+        if self.pair_count > 1:
+            candidate = self.ranks.index(2)
+            kicker = min(kicker, candidate)
+
+        if pair < kicker:
+            kicker -= 1
+
+        return START_3_PAIR + (pair * 12) + kicker
+    
+    def findThreeCardHi(self):
+        """Return the rank of the hi card hand."""
+        hi = self.ranks.index(1)
+        self.ranks[hi] = 0
+        middle = self.ranks.index(1)
+        self.ranks[middle] = 0
+        low = self.ranks.index(1)
+
+        print(str(hi) + ", " + str(middle) + ", " + str(low))
+        self.board[2] = 0
+        return None
 
     def findSequence(self, card_index, min_index):
         """Return the lowest and highest index in the sequence.
