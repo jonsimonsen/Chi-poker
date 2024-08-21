@@ -313,6 +313,7 @@ class Bot(ABC):
         
         pair = self.ranks.index(2)
         self.ranks[pair] = 0
+        self.pair_count -= 1
         kickers = []
         rank = 0
 
@@ -350,6 +351,7 @@ class Bot(ABC):
                 self.ranks[self.ranks.index(3)] = 1
             if 2 in self.ranks:
                 self.ranks[self.ranks.index(2)] = 0
+            self.locked_pairs = 0
 
         hi_cards = []
         for i in range(5):
@@ -380,6 +382,7 @@ class Bot(ABC):
         Return None if there is no pair or a pair is illegal"""
         if self.pair_count == 0:
             return None
+        print(self.pair_count)
         
         pair = self.ranks.index(2)
         self.ranks[pair] = 0
