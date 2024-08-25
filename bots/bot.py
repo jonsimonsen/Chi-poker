@@ -410,10 +410,17 @@ class Bot(ABC):
         middle = self.ranks.index(1)
         self.ranks[middle] = 0
         low = self.ranks.index(1)
+        rank = 0
 
         print(str(hi) + ", " + str(middle) + ", " + str(low))
-        self.board[2] = 0
-        return None
+
+        for i in range(11 - hi, 11):
+            rank += N_CHOOSE_2[i]
+        for j in range(hi + 1, middle):
+            rank += 12 - j
+        rank += low - middle - 1
+
+        return START_3_HI + rank
 
     def findSequence(self, card_index, min_index):
         """Return the lowest and highest index in the sequence.

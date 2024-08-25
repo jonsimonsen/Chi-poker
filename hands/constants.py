@@ -26,16 +26,7 @@ MAX_CARDBITS = 8191
 # Generic
 PAIR_KICKERS = 220
 
-# 2-flushes
-#F2_11 = 45
-#F2_10 = 36
-#F2_9 = 28
-#F2_8 = 21
-#F2_7 = 15
-#F2_6 = 10
-#F2_5 = 6
-#F2_4 = 3
-#F2 = [F2_11, F2_10, F2_9, F2_8, F2_7, F2_6, F2_5, F2_4]
+# 2-flushes and other hands where you choose 2 cards
 N_CHOOSE_2 = [1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66]
 
 # 3-flushes

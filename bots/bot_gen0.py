@@ -32,7 +32,7 @@ class Ai_gen0(Bot):
                 break
         for j in range (len(FUNCS_3)):
             category = self.findHandCategory(FUNCS_3[j][0], FUNCS_3[j][1])
-            if self.board[2] >= 0:
+            if category == END_3_HI:
                 break
     
     def findHandCategory(self, functionName, nextCategory):
@@ -53,6 +53,7 @@ class Ai_gen0(Bot):
                 thisCategory = nextCategory
             elif functionName.startswith("findThree"):
                 self.board[2] = hand
+                thisCategory = END_3_HI
             elif self.board[0] == -1:
                 self.board[0] = hand
             else:
@@ -114,9 +115,17 @@ if __name__ == '__main__':
     dumb_bot.arrangeBoard()
     print("Summary: " + str(dumb_bot.board))"""
 
-    print("Rank issue (locked pair used)")
+    """print("Rank issue (locked pair used)")
     dumb_bot.resetHand([0b110001110011001, 0b10101000000000, 0b10100010000010, 0b10010010000000])
     print("Start hand: ")
     printHand(dumb_bot.suits)
     dumb_bot.arrangeBoard()
+    print("Summary: " + str(dumb_bot.board))"""
+
+    print("Double flush issue")
+    dumb_bot.resetHand([0b111010000100110, 0b110100110000101, 0b10001000010000, 0b10000001000000])
+    print("Start hand: ")
+    printHand(dumb_bot.suits)
+    dumb_bot.arrangeBoard()
     print("Summary: " + str(dumb_bot.board))
+
