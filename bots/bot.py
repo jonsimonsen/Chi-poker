@@ -326,14 +326,11 @@ class Bot(ABC):
 
         print(str(pair) + "s with kickers " + str(kickers))
         rank += pair * PAIR_KICKERS
-        if kickers[0] > 0:
-            rank += 55
-            for i in range(1, kickers[0]):
-                if i >= 9:
-                    print("Error. Unexpected kicker index.")
-                    break
-                else:
-                    rank += F2[i - 1]
+        for i in range(10 - kickers[0], 10):
+            if i < 1:
+                print("Error. Unexpected kicker index.")
+                break
+            rank += N_CHOOSE_2[i]
         for j in range(kickers[0] + 1, kickers[1]):
             rank += 11 - j
         rank += kickers[2] - kickers[1] - 1

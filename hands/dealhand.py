@@ -149,11 +149,11 @@ def rankHiCard(hand):
     for i in range(hand[0], hand[1] - 1):
         rank += F3[(i)]
     print("Rank: " + str(rank))
-    for i in range(hand[1] - 1, hand[2] - 2):
-        rank += F2[(i)]
+    for j in range(11 - hand[2], 10 - hand[1]):
+        rank += N_CHOOSE_2[(j)]
     print("Rank: " + str(rank))
-    for i in range(hand[2] + 1, hand[3]):
-        rank += 12 - i
+    for k in range(hand[2] + 1, hand[3]):
+        rank += 12 - k
     print("Rank: " + str(rank))
     rank += hand[4] - (hand[3] + 1)
     print("Rank: " + str(rank))
