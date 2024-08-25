@@ -159,6 +159,7 @@ class Bot(ABC):
             for value in flush[:5]:
                 removeCard(self.suits, suit, 12 - value)
             fixLengthBits(self.suits, suit)
+        self.suits.sort(reverse=True)
         return START_FL + rank
 
     def findStraight(self):
