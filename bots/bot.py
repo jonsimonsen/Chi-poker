@@ -13,6 +13,7 @@ class Bot(ABC):
     def __init__(self, hand):
         self.suits = hand
         self.board = [-1, -1, -1]
+        self.bonus = 0
         self.locked_pairs = 0
         self.pair_count = -1
         self.ranks = []
@@ -49,6 +50,7 @@ class Bot(ABC):
                         self.suits[suit] = self.suits[suit] ^ (bitmask << i)
                         fixLengthBits(self.suits, suit)
                         self.suits.sort(reverse=True)
+                        self.bonus += 4
                         return 8 - i
                 # Check for wheel
                 bitmask = 0b1111
@@ -57,8 +59,8 @@ class Bot(ABC):
                         self.suits[suit] = self.suits[suit] ^ 0b1000000001111
                         fixLengthBits(self.suits, suit)
                         self.suits.sort(reverse=True)
+                        self.bonus += 4
                         return 9
-
         return None
     
     def findQuads(self):
@@ -74,6 +76,7 @@ class Bot(ABC):
                 removeCard(self.suits, suit, 12 - i)
                 fixLengthBits(self.suits, suit)
                 self.ranks[i] = 0
+            self.bonus += 3
             return i + START_QUADS
         else:
             return None
@@ -96,7 +99,8 @@ class Bot(ABC):
                 self.ranks[i] = 0
                 self.suits.sort(reverse=True)
                 self.locked_pairs += 1
-                printHand(self.suits)
+                if self.board[0] > -1:
+                    self.bonus += 1
                 return i + START_FH
         return None
 
@@ -121,8 +125,6 @@ class Bot(ABC):
         for i in reversed(range(13)):
             if self.suits[suit] & 1 << i:
                 flush.append(12 - i)
-        print(flush)
-        print(self.ranks)
         
         # Make sure that there is no straight flush
         if flush[4] - flush[0] == 4:
@@ -134,17 +136,13 @@ class Bot(ABC):
             low_pair = -1
             for i in reversed(range(13)):
                 if self.ranks[i] > 1:
-                    print(i)
                     if (i) not in (flush[4::-1]):
                         lock = False
                         break
                     elif low_pair == -1:
                         low_pair = i
-            print(lock)
-            print(low_pair)
 
             if lock:
-                print("Fixing")
                 flush.remove(low_pair)
                 if len(flush) < 5:
                     return None
@@ -287,8 +285,6 @@ class Bot(ABC):
                 self.pair_count -= 1
         self.ranks[kicker] -= 1
 
-        print("[ " + str(first_pair) + ", " + str(second_pair) + ", " + str(kicker) + " ]")
-
         # Calculate hand rank
         for i in range(first_pair):
             rank += 12 - i
@@ -325,7 +321,6 @@ class Bot(ABC):
                 index -= 1
             kickers.append(index)
 
-        print(str(pair) + "s with kickers " + str(kickers))
         rank += pair * PAIR_KICKERS
         for i in range(10 - kickers[0], 10):
             if i < 1:
@@ -375,6 +370,7 @@ class Bot(ABC):
             return None
         
         if 3 in self.ranks:
+            self.bonus += 2
             return START_3 + self.ranks.index(3)
         else:
             return None
@@ -385,7 +381,6 @@ class Bot(ABC):
         Return None if there is no pair or a pair is illegal"""
         if self.pair_count == 0:
             return None
-        print(self.pair_count)
         
         pair = self.ranks.index(2)
         self.ranks[pair] = 0
@@ -412,8 +407,6 @@ class Bot(ABC):
         self.ranks[middle] = 0
         low = self.ranks.index(1)
         rank = 0
-
-        print(str(hi) + ", " + str(middle) + ", " + str(low))
 
         for i in range(11 - hi, 11):
             rank += N_CHOOSE_2[i]
@@ -447,5 +440,4 @@ class Bot(ABC):
         if high_index == 0:
             high_index = low_index + 4
 
-        print("upper: " + str(low_index) + " , lower: " + str(high_index))
         return [low_index, high_index]

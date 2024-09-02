@@ -65,7 +65,7 @@ END_HI = 6331
 START_3 = 6400
 START_3_PAIR = 6413
 START_3_HI = 6569
-END_3_HI = 9999
+END_3_HI = 6855
 
 # Mapping between function name and hand strength of the next hand category
 FUNC_SFL = ["findStraightFlush", START_QUADS]
