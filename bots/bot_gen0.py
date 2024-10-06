@@ -64,8 +64,13 @@ class Ai_gen0(Bot):
 
 
 if __name__ == '__main__':
+    #Simulate multiple hands
+    numHands = 200
+    print("Simulating " + str(numHands) + " Chinese poker hands:\n")
     dumb_bot = Ai_gen0([0, 0, 0, 0])
-    hand = None
+    dumb_bot.simulateHands(numHands)
+
+    """hand = None
     # Arrange 50 random hands
     for i in range(50):
         hand = processHand(dealHand())
@@ -75,7 +80,7 @@ if __name__ == '__main__':
         dumb_bot.arrangeBoard()
         print("Summary: " + str(dumb_bot.board))
         print("Bonus: " + str(dumb_bot.bonus))
-        print("")
+        print("")"""
 
     # Test specific hands
     print("Test specific hands:\n")

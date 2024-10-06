@@ -31,6 +31,46 @@ class Bot(ABC):
         """
         self.__init__(hand)
 
+    def makeChart(self):
+        """Prepare arrays for a hand ranking chart.
+
+        Populate all spots in back, middle and front.
+        """
+        self.back = []
+        for i in range(END_HI + 1):
+            self.back.append(0)
+        self.middle = []
+        for j in range(END_HI + 1):
+            self.middle.append(0)
+        self.front = []
+        for k in range(START_3, END_3_HI + 1):
+            self.front.append(0)
+
+    def simulateHands(self, numHands):
+        """Arrange numHands Chinese hands.
+        
+        
+        """
+        self.makeChart()
+        hand = None
+
+        # Arrange random hands
+        for i in range(numHands):
+            hand = processHand(dealHand())
+            self.resetHand(hand)
+            self.arrangeBoard()
+            self.back[self.board[0]] += 1
+            self.middle[self.board[1]] += 1
+            self.front[self.board[2] - START_3] += 1
+
+        for backHand in self.back:
+            print(backHand)
+        for middleHand in self.middle:
+            print(middleHand)
+        for frontHand in self.front:
+            print(frontHand)
+
+
     # Base methods for finding various poker hands
 
     def findStraightFlush(self):
@@ -270,6 +310,7 @@ class Bot(ABC):
         first_pair = -1
         second_pair = -1
         rank = 0
+        kicker = 14 #Ensure that a pair is used when all cards are paired
 
         first_pair = self.ranks.index(2)
         self.ranks[first_pair] = 0
@@ -277,7 +318,8 @@ class Bot(ABC):
         self.ranks[second_pair] = 0
         self.pair_count -= 2
 
-        kicker = self.ranks.index(1)
+        if(1 in self.ranks):
+            kicker = self.ranks.index(1)
         if (kicker > second_pair + 1) and (self.pair_count > 0):
             candidate = self.ranks.index(2)
             if candidate < kicker:
