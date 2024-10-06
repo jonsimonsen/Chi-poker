@@ -12,6 +12,7 @@ class Bot(ABC):
     """Class for a Chinese poker bot."""
     def __init__(self, hand):
         self.suits = hand
+        self.startHand = hand
         self.board = [-1, -1, -1]
         self.bonus = 0
         self.locked_pairs = 0
@@ -63,13 +64,16 @@ class Bot(ABC):
             self.middle[self.board[1]] += 1
             self.front[self.board[2] - START_3] += 1
 
+        print("Back:")
         for backHand in self.back:
             print(backHand)
+        print("\nMiddle:")
         for middleHand in self.middle:
             print(middleHand)
+        print("\nFront")
         for frontHand in self.front:
             print(frontHand)
-
+        print("\n")
 
     # Base methods for finding various poker hands
 
@@ -428,13 +432,17 @@ class Bot(ABC):
         self.ranks[pair] = 0
         self.pair_count -= 1
         kicker = 99
+        pair_kicker = 99
+        trip_kicker = 99
 
         if 1 in self.ranks:
             kicker = self.ranks.index(1)
 
-        if self.pair_count > 1:
-            candidate = self.ranks.index(2)
-            kicker = min(kicker, candidate)
+        if self.pair_count > 1 and (2 in self.ranks):
+            pair_kicker = self.ranks.index(2)
+        if 3 in self.ranks:
+            trip_kicker = self.ranks.index(3)
+        kicker = min(kicker, pair_kicker, trip_kicker)
 
         if pair < kicker:
             kicker -= 1
@@ -443,11 +451,23 @@ class Bot(ABC):
     
     def findThreeCardHi(self):
         """Return the rank of the hi card hand."""
+
+        #Remove all locked pairs from ranks
+        for i in range(len(self.ranks)):
+            if self.ranks[i] > 1:
+                self.ranks[i] -= 2
+        
+
         hi = self.ranks.index(1)
         self.ranks[hi] = 0
         middle = self.ranks.index(1)
         self.ranks[middle] = 0
-        low = self.ranks.index(1)
+        try:
+            low = self.ranks.index(1)
+        except Exception:
+            print(self.ranks)
+            printHand(self.startHand)
+
         rank = 0
 
         for i in range(11 - hi, 11):
