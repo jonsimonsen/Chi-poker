@@ -65,7 +65,7 @@ class Ai_gen0(Bot):
 
 if __name__ == '__main__':
     #Simulate multiple hands
-    numHands = 10000
+    numHands = 100000
     print("Simulating " + str(numHands) + " Chinese poker hands:\n")
     dumb_bot = Ai_gen0([0, 0, 0, 0])
     dumb_bot.simulateHands(numHands)

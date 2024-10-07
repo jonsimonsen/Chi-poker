@@ -60,12 +60,15 @@ START_TWO_PAIR = 1336
 START_PAIR = 2194
 START_HI = 5054
 END_HI = 6331
+BREAKPOINTS_5_CARDS = [[0, "Straight flush"], [START_QUADS, "Quads"], [START_FH, "Full house"], [START_FL, "Flush"], [START_STR, "Straight"],
+                       [START_TRIPS, "Trips"], [START_TWO_PAIR, "Two pairs"], [START_PAIR, "Pair"], [START_HI, "Hi card"]]
 
 # Starting point of three card hands
 START_3 = 6400
 START_3_PAIR = 6413
 START_3_HI = 6569
 END_3_HI = 6855
+BREAKPOINTS_3_CARDS = [[0, "Trips"], [(START_3_PAIR - START_3), "Pair"], [(START_3_HI - START_3), "Hi card"]]
 
 # Mapping between function name and hand strength of the next hand category
 FUNC_SFL = ["findStraightFlush", START_QUADS]

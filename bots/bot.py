@@ -38,13 +38,13 @@ class Bot(ABC):
         Populate all spots in back, middle and front.
         """
         self.back = []
-        for i in range(END_HI + 1):
+        for i in range(END_HI):
             self.back.append(0)
         self.middle = []
-        for j in range(END_HI + 1):
+        for j in range(END_HI):
             self.middle.append(0)
         self.front = []
-        for k in range(START_3, END_3_HI + 1):
+        for k in range(START_3, END_3_HI):
             self.front.append(0)
 
     def simulateHands(self, numHands):
@@ -64,15 +64,47 @@ class Bot(ABC):
             self.middle[self.board[1]] += 1
             self.front[self.board[2] - START_3] += 1
 
-        print("Back:")
-        for backHand in self.back:
-            print(backHand)
-        print("\nMiddle:")
-        for middleHand in self.middle:
-            print(middleHand)
-        print("\nFront")
-        for frontHand in self.front:
-            print(frontHand)
+        print("Back:\n")
+        print(BREAKPOINTS_5_CARDS[0][1] + ":")
+        rank_index = 1
+        back_next = BREAKPOINTS_5_CARDS[rank_index][0]
+        for backHand in range(len(self.back)):
+            if backHand == back_next:
+                print(BREAKPOINTS_5_CARDS[rank_index][1] + ":")
+                rank_index += 1
+                if back_next < BREAKPOINTS_5_CARDS[-1][0]:
+                    back_next = BREAKPOINTS_5_CARDS[rank_index][0]
+                else:
+                    back_next = -1
+            print(self.back[backHand])
+
+        print("\nMiddle:\n")
+        print(BREAKPOINTS_5_CARDS[0][1] + ":")
+        rank_index = 1
+        middle_next = BREAKPOINTS_5_CARDS[rank_index][0]
+        for middleHand in range(len(self.middle)):
+            if middleHand == middle_next:
+                print(BREAKPOINTS_5_CARDS[rank_index][1] + ":")
+                rank_index += 1
+                if middle_next < BREAKPOINTS_5_CARDS[-1][0]:
+                    middle_next = BREAKPOINTS_5_CARDS[rank_index][0]
+                else:
+                    middle_next = -1
+            print(self.middle[middleHand])
+
+        print("\nFront:\n")
+        print(BREAKPOINTS_3_CARDS[0][1] + ":")
+        rank_index = 1
+        front_next = BREAKPOINTS_3_CARDS[rank_index][0]
+        for frontHand in range(len(self.front)):
+            if frontHand == front_next:
+                print(BREAKPOINTS_3_CARDS[rank_index][1] + ":")
+                rank_index += 1
+                if front_next < BREAKPOINTS_3_CARDS[-1][0]:
+                    front_next = BREAKPOINTS_3_CARDS[rank_index][0]
+                else:
+                    front_next = -1
+            print(self.front[frontHand])
         print("\n")
 
     # Base methods for finding various poker hands
