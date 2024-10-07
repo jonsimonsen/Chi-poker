@@ -38,7 +38,7 @@ class Bot(ABC):
         Populate all spots in back, middle and front.
         """
         self.back = []
-        for i in range(END_HI):
+        for i in range(START_PAIR):
             self.back.append(0)
         self.middle = []
         for j in range(END_HI):
@@ -64,19 +64,27 @@ class Bot(ABC):
             self.middle[self.board[1]] += 1
             self.front[self.board[2] - START_3] += 1
 
-        print("Back:\n")
-        print(BREAKPOINTS_5_CARDS[0][1] + ":")
-        rank_index = 1
-        back_next = BREAKPOINTS_5_CARDS[rank_index][0]
-        for backHand in range(len(self.back)):
-            if backHand == back_next:
-                print(BREAKPOINTS_5_CARDS[rank_index][1] + ":")
-                rank_index += 1
-                if back_next < BREAKPOINTS_5_CARDS[-1][0]:
-                    back_next = BREAKPOINTS_5_CARDS[rank_index][0]
-                else:
-                    back_next = -1
-            print(self.back[backHand])
+        with open('x_gen0_back.txt', 'w') as r_back, open('c_gen0_back.txt', 'w') as c_back:
+
+            count = 0
+            print("Back:\n", file=r_back)
+            print("Back:\n", file=c_back)
+            print(BREAKPOINTS_5_CARDS[0][1] + ":", file=r_back)
+            print(BREAKPOINTS_5_CARDS[0][1] + ":", file=c_back)
+            rank_index = 1
+            back_next = BREAKPOINTS_5_CARDS[rank_index][0]
+            for backHand in range(len(self.back)):
+                if backHand == back_next:
+                    print(BREAKPOINTS_5_CARDS[rank_index][1] + ":", file=r_back)
+                    print(BREAKPOINTS_5_CARDS[rank_index][1] + ":", file=c_back)
+                    rank_index += 1
+                    if back_next < BREAKPOINTS_5_CARDS[-1][0]:
+                        back_next = BREAKPOINTS_5_CARDS[rank_index][0]
+                    else:
+                        back_next = -1
+                print(self.back[backHand], file=r_back)
+                count += self.back[backHand]
+                print(count, file=c_back)
 
         print("\nMiddle:\n")
         print(BREAKPOINTS_5_CARDS[0][1] + ":")
